@@ -1,0 +1,893 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Qarz daftar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Onest:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky header (title, search, filters) over a contact-style list grouped by first letter; details and forms open in a bottom sheet; fixed add button at the bottom. */
+:root {
+  --paper: #F1F4F5;
+  --card: #FFFFFF;
+  --ink: #15232A;
+  --muted: #587079;
+  --line: #DAE2E5;
+  --accent: #1D5C73;
+  --accent-ink: #FFFFFF;
+  --debt: #B03A2B;
+  --debt-bg: #F8E7E3;
+  --ok: #1F6E49;
+  --ok-bg: #DFF1E7;
+  --scrim: rgba(12, 24, 30, 0.5);
+  --av-l: 88%;
+  --av-fg: 30%;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Onest", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E171B;
+    --card: #172329;
+    --ink: #E5EDF0;
+    --muted: #8FA3AC;
+    --line: #26353D;
+    --accent: #5DB0CC;
+    --accent-ink: #06222C;
+    --debt: #F08B7C;
+    --debt-bg: #3A1F1C;
+    --ok: #6CCB9C;
+    --ok-bg: #16301F;
+    --scrim: rgba(0, 0, 0, 0.62);
+    --av-l: 26%;
+    --av-fg: 82%;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E171B;
+  --card: #172329;
+  --ink: #E5EDF0;
+  --muted: #8FA3AC;
+  --line: #26353D;
+  --accent: #5DB0CC;
+  --accent-ink: #06222C;
+  --debt: #F08B7C;
+  --debt-bg: #3A1F1C;
+  --ok: #6CCB9C;
+  --ok-bg: #16301F;
+  --scrim: rgba(0, 0, 0, 0.62);
+  --av-l: 26%;
+  --av-fg: 82%;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem/1.45 var(--font-body);
+  -webkit-text-size-adjust: 100%;
+}
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.app { max-width: 600px; margin: 0 auto; padding-inline: 16px; padding-block: 0 120px; }
+
+/* header */
+.top {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--paper);
+  padding-block: 16px 10px;
+  display: grid;
+  gap: 12px;
+}
+h1 {
+  margin: 0;
+  font: 700 1.75rem/1.1 var(--font-display);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.search { position: relative; }
+.search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+.search input {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  padding-inline: 44px 14px;
+  font: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search input::placeholder { color: var(--muted); }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  height: 36px;
+  padding-inline: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+/* summary */
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  padding-block: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.cap { color: var(--muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; }
+.total { font: 700 1.6rem/1.15 var(--font-display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.summary .side { color: var(--muted); font-size: 0.875rem; text-align: right; }
+
+/* contact list */
+.group-h { color: var(--muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 18px 0 4px; }
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 66px;
+  padding: 12px 0;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 700 1.05rem var(--font-display);
+  background: hsl(var(--h) 38% var(--av-l));
+  color: hsl(var(--h) 55% var(--av-fg));
+}
+.avatar.lg { width: 56px; height: 56px; font-size: 1.3rem; }
+.who { flex: 1; min-width: 0; }
+.who b { display: block; font-weight: 600; overflow-wrap: anywhere; }
+.who small { display: block; color: var(--muted); font-size: 0.85rem; overflow-wrap: anywhere; }
+.amt { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.amt.debt { color: var(--debt); }
+.pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+.pill.ok { background: var(--ok-bg); color: var(--ok); }
+.pill.debt { background: var(--debt-bg); color: var(--debt); }
+.pill.none { background: var(--line); color: var(--muted); }
+
+/* search result cards */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; margin-top: 12px; overflow: hidden; }
+.card .row { border-bottom: 0; padding: 12px 14px; }
+.mini { list-style: none; margin: 0; padding: 12px 14px 14px; border-top: 1px dashed var(--line); display: grid; gap: 10px; }
+.mini li { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.mini .l { min-width: 0; }
+.mini .l span { display: block; color: var(--muted); font-size: 0.85rem; overflow-wrap: anywhere; }
+.mini .r { display: grid; justify-items: end; gap: 4px; }
+.mini .verdict { display: flex; align-items: center; gap: 8px; color: var(--ok); font-weight: 600; }
+
+.state, .fine { color: var(--muted); font-size: 0.875rem; }
+.fine { margin: 28px 0 0; }
+.empty { padding: 36px 0 8px; display: grid; gap: 12px; justify-items: start; }
+.empty h2 { margin: 0; font: 700 1.3rem/1.2 var(--font-display); }
+.empty p { margin: 0; color: var(--muted); max-width: 38ch; }
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding-inline: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.danger { color: var(--debt); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.link { background: none; border: 0; padding: 4px 0; color: var(--accent); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+.icon { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.icon:hover { background: var(--paper); }
+
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+}
+.bar .btn { display: flex; width: 100%; max-width: 568px; margin-inline: auto; }
+
+/* sheet */
+.scrim { position: fixed; inset: 0; z-index: 20; background: var(--scrim); }
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  width: 100%;
+  max-width: 600px;
+  max-height: 92%;
+  margin-inline: auto;
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+  padding: 12px 16px calc(24px + env(safe-area-inset-bottom, 0px));
+}
+.sh { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 40px; }
+.sh-t { margin: 0; font: 700 1.25rem/1.2 var(--font-display); }
+.sh-btns { display: flex; gap: 2px; margin-left: auto; }
+.ident { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.ident h2 { margin: 0; font: 700 1.4rem/1.15 var(--font-display); overflow-wrap: anywhere; }
+.ident .phone { margin: 2px 0 0; color: var(--muted); user-select: all; }
+.bal { margin-top: 16px; padding: 16px; border-radius: 14px; display: grid; gap: 6px; }
+.bal.debt { background: var(--debt-bg); color: var(--debt); }
+.bal.ok { background: var(--ok-bg); color: var(--ok); }
+.bal.none { background: var(--paper); color: var(--ink); }
+.bal .cap { color: inherit; opacity: 0.85; }
+.bal .big { font: 700 2rem/1.1 var(--font-display); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 8px; overflow-wrap: anywhere; }
+.bal .sub { margin: 0; font-size: 0.875rem; color: var(--ink); }
+.track { height: 6px; border-radius: 3px; background: color-mix(in srgb, currentColor 18%, transparent); overflow: hidden; margin-top: 4px; }
+.track i { display: block; height: 100%; background: currentColor; }
+.acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.sec-h { margin: 22px 0 4px; }
+.ents { list-style: none; margin: 0; padding: 0; }
+.ent { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.ent-main { flex: 1; min-width: 0; }
+.ent-main b { display: block; font-weight: 600; }
+.ent-main span { display: block; color: var(--muted); font-size: 0.85rem; overflow-wrap: anywhere; }
+.ent-side { display: grid; justify-items: end; gap: 4px; }
+.ent-ask { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+.ent-ask .link { padding: 6px 8px; }
+.none-t { color: var(--muted); padding: 10px 0; margin: 0; }
+.danger-zone { margin-top: 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.sub { color: var(--muted); margin: 4px 0 0; }
+
+/* forms */
+.field { display: grid; gap: 6px; margin-top: 14px; }
+.field label { font-weight: 600; font-size: 0.875rem; }
+.field input {
+  width: 100%;
+  min-width: 0;
+  height: 48px;
+  padding-inline: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 440px) { .two { grid-template-columns: 1fr; } }
+.field-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.err { margin: 12px 0 0; color: var(--debt); font-weight: 500; }
+.form-acts { display: flex; gap: 10px; margin-top: 18px; }
+.form-acts .btn { flex: 1; }
+.part-h { margin: 22px 0 0; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+</style>
+
+<div class="app">
+  <header class="top">
+    <h1>Qarz daftar</h1>
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Ism yoki telefon bo'yicha qidirish" autocomplete="off" aria-label="Qarzdorni qidirish">
+    </div>
+    <div class="chips" role="group" aria-label="Filtr">
+      <button class="chip" type="button" data-action="filter" data-f="all" aria-pressed="true">Hammasi</button>
+      <button class="chip" type="button" data-action="filter" data-f="debt" aria-pressed="false">Qarzdor</button>
+      <button class="chip" type="button" data-action="filter" data-f="clear" aria-pressed="false">Qarzi yo'q</button>
+    </div>
+  </header>
+  <div id="summary" class="summary" hidden></div>
+  <main id="list" aria-live="polite"></main>
+  <p id="fine" class="fine"></p>
+</div>
+
+<div class="bar">
+  <button class="btn primary" type="button" data-action="new">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    Qarzdor qo'shish
+  </button>
+</div>
+<div id="sheetRoot" hidden></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var LS = "qarz-daftar-v1";
+  var MONTHS = ["yan", "fev", "mar", "apr", "may", "iyn", "iyl", "avg", "sen", "okt", "noy", "dek"];
+  var ICON = {
+    x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+    pencil: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/></svg>',
+    trash: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12h10l1-12M9 7V4h6v3"/></svg>',
+    check: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
+    checkSm: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>'
+  };
+
+  function $(s) { return document.querySelector(s); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function grp(n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function money(n) { return grp(n) + " so'm"; }
+  function parseAmt(v) { return Number(String(v || "").replace(/\D/g, "")) || 0; }
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function today() { return iso(new Date()); }
+  function daysAgo(n) { var d = new Date(); d.setDate(d.getDate() - n); return iso(d); }
+  function fmtDate(s) {
+    var p = String(s || "").split("-");
+    if (p.length !== 3) return "";
+    return Number(p[2]) + " " + MONTHS[Number(p[1]) - 1] + " " + p[0];
+  }
+  function uid(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+  function hue(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+    return h % 360;
+  }
+  function initial(name) {
+    var t = String(name).trim();
+    return (t ? Array.from(t)[0] : "?").toLocaleUpperCase("uz");
+  }
+  function byDate(a, b) {
+    return String(a.date).localeCompare(String(b.date)) || String(a.id).localeCompare(String(b.id));
+  }
+
+  /* state */
+  var debtors = [];
+  var ready = false;
+  var backend = "local";
+  var col = null;
+  var query = "";
+  var filter = "all";
+  var sheet = null;
+  var toastTimer = 0;
+  var queues = {};
+
+  /* debts are paid oldest first */
+  function calc(d) {
+    var debts = d.entries.filter(function (e) { return e.type === "debt"; }).sort(byDate);
+    var pays = d.entries.filter(function (e) { return e.type === "pay"; }).sort(byDate);
+    var totalDebt = 0, totalPaid = 0, i;
+    for (i = 0; i < debts.length; i++) totalDebt += Number(debts[i].amount) || 0;
+    for (i = 0; i < pays.length; i++) totalPaid += Number(pays[i].amount) || 0;
+    var pool = totalPaid;
+    var rows = debts.map(function (e) {
+      var amt = Number(e.amount) || 0;
+      var take = Math.min(amt, pool);
+      pool -= take;
+      return { id: e.id, date: e.date, note: e.note || "", amount: amt, left: amt - take };
+    });
+    return { rows: rows, pays: pays, totalDebt: totalDebt, totalPaid: totalPaid, balance: totalDebt - totalPaid };
+  }
+
+  /* storage */
+  function lsLoad() {
+    try { var v = JSON.parse(localStorage.getItem(LS) || "[]"); return Array.isArray(v) ? v : []; }
+    catch (e) { return []; }
+  }
+  function lsSave() { try { localStorage.setItem(LS, JSON.stringify(debtors)); } catch (e) {} }
+  function plain(d) { return { name: d.name, phone: d.phone || "", createdAt: d.createdAt || 0, entries: d.entries }; }
+  function failToast(err) {
+    var code = err && err.code;
+    toast(code === "quota_exceeded" ? "Daftar to'ldi, saqlab bo'lmadi" : "Saqlab bo'lmadi, qayta urinib ko'ring");
+  }
+  function save(d) {
+    if (backend === "db" && col) {
+      var prev = queues[d.id] || Promise.resolve();
+      queues[d.id] = prev.then(function () { return col.doc(d.id).set(plain(d)); }).catch(failToast);
+    } else {
+      lsSave();
+    }
+  }
+  function removeDebtor(id) {
+    debtors = debtors.filter(function (d) { return d.id !== id; });
+    if (backend === "db" && col) {
+      var prev = queues[id] || Promise.resolve();
+      queues[id] = prev.then(function () { return col.doc(id).delete(); }).catch(failToast);
+    } else {
+      lsSave();
+    }
+  }
+  function find(id) { for (var i = 0; i < debtors.length; i++) if (debtors[i].id === id) return debtors[i]; return null; }
+
+  function toast(msg) {
+    var t = $("#toast");
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 2600);
+  }
+
+  /* list */
+  function renderSummary() {
+    var s = $("#summary");
+    if (!ready || !debtors.length) { s.hidden = true; s.innerHTML = ""; return; }
+    var total = 0, n = 0;
+    debtors.forEach(function (d) { var b = calc(d).balance; if (b > 0) { total += b; n++; } });
+    s.hidden = false;
+    s.innerHTML = '<div><div class="cap">Jami qarz</div><div class="total">' + money(total) + '</div></div>' +
+      '<div class="side">' + n + " ta qarzdor<br>jami " + debtors.length + " kishi</div>";
+  }
+
+  function rowHtml(d, c) {
+    var right;
+    if (c.balance > 0) right = '<span class="amt debt">' + money(c.balance) + "</span>";
+    else if (c.totalDebt > 0) right = '<span class="pill ok">Qarzdorlik yo\'q</span>';
+    else right = '<span class="pill none">Qarz yozilmagan</span>';
+    var n = c.rows.length;
+    var sub = [];
+    if (n) sub.push(n + " ta qarz");
+    if (d.phone) sub.push(esc(d.phone));
+    return '<button class="row" type="button" data-action="open" data-id="' + esc(d.id) + '">' +
+      '<span class="avatar" style="--h:' + hue(d.name) + '">' + esc(initial(d.name)) + "</span>" +
+      '<span class="who"><b>' + esc(d.name) + "</b>" + (sub.length ? "<small>" + sub.join(" · ") + "</small>" : "") + "</span>" +
+      right + "</button>";
+  }
+
+  function miniHtml(c) {
+    if (!c.rows.length) return '<ul class="mini"><li><span class="l"><span>Hali qarz yozilmagan</span></span></li></ul>';
+    var items = c.rows.slice().reverse().map(function (r) {
+      var st = r.left <= 0 ? '<span class="pill ok">To\'langan</span>'
+        : (r.left < r.amount ? '<span class="pill debt">Qoldi ' + money(r.left) + "</span>" : '<span class="pill debt">To\'lanmagan</span>');
+      return '<li><span class="l"><b>' + fmtDate(r.date) + "</b>" + (r.note ? "<span>" + esc(r.note) + "</span>" : "") +
+        '</span><span class="r"><span class="amt">' + money(r.amount) + "</span>" + st + "</span></li>";
+    }).join("");
+    if (c.balance <= 0) items += '<li><span class="verdict">' + ICON.checkSm + " Qarzdorlik yo'q</span></li>";
+    return '<ul class="mini">' + items + "</ul>";
+  }
+
+  function renderList() {
+    var main = $("#list");
+    renderSummary();
+    var fine = $("#fine");
+    if (!ready) { main.innerHTML = '<p class="state">Daftar yuklanmoqda…</p>'; fine.textContent = ""; return; }
+    fine.textContent = backend === "db"
+      ? "Daftar faqat sizga ko'rinadi va akkauntingizda saqlanadi."
+      : "Ma'lumotlar faqat shu qurilmada saqlanadi.";
+
+    if (!debtors.length) {
+      main.innerHTML = '<div class="empty"><h2>Daftar hozircha bo\'sh</h2>' +
+        "<p>Qarzdorni qo'shing, unga olgan qarzlarini yozing. To'lov kelganda belgilang, qoldiq o'zi hisoblanadi. Ismni qidirsangiz, uning barcha qarzlari chiqadi.</p>" +
+        '<button class="btn primary" type="button" data-action="new">Birinchi qarzdorni qo\'shish</button>' +
+        '<button class="link" type="button" data-action="sample">Avval namunani ko\'rish</button></div>';
+      return;
+    }
+
+    var q = query.trim().toLowerCase();
+    var qd = q.replace(/\D/g, "");
+    var items = debtors.map(function (d) { return { d: d, c: calc(d) }; });
+    if (q) items = items.filter(function (x) {
+      return x.d.name.toLowerCase().indexOf(q) !== -1 || (qd && String(x.d.phone || "").replace(/\D/g, "").indexOf(qd) !== -1);
+    });
+    if (filter === "debt") items = items.filter(function (x) { return x.c.balance > 0; });
+    if (filter === "clear") items = items.filter(function (x) { return x.c.balance <= 0; });
+    items.sort(function (a, b) { return a.d.name.localeCompare(b.d.name, "uz"); });
+
+    if (!items.length) {
+      if (q) {
+        main.innerHTML = '<div class="empty"><h2>“' + esc(query.trim()) + '” topilmadi</h2><p>Bu ism daftarda yo\'q. Yangi qarzdor sifatida qo\'shishingiz mumkin.</p>' +
+          '<button class="btn primary" type="button" data-action="new-from-q">“' + esc(query.trim()) + '” ni qo\'shish</button></div>';
+      } else {
+        main.innerHTML = '<div class="empty"><h2>Bu bo\'limda hech kim yo\'q</h2><p>Boshqa filtrni tanlang.</p></div>';
+      }
+      return;
+    }
+
+    if (q) {
+      main.innerHTML = items.map(function (x) {
+        return '<article class="card">' + rowHtml(x.d, x.c) + miniHtml(x.c) + "</article>";
+      }).join("");
+      return;
+    }
+
+    var html = "", last = "";
+    items.forEach(function (x) {
+      var l = initial(x.d.name);
+      if (l !== last) { html += '<div class="group-h">' + esc(l) + "</div>"; last = l; }
+      html += rowHtml(x.d, x.c);
+    });
+    main.innerHTML = html;
+  }
+
+  /* sheet */
+  function fieldHtml(id, label, attrs, extra) {
+    return '<div class="field"><div class="field-row"><label for="' + id + '">' + label + "</label>" + (extra || "") + "</div>" +
+      '<input id="' + id + '" ' + attrs + "></div>";
+  }
+
+  function detailHtml(d) {
+    var c = calc(d);
+    var bal;
+    if (c.totalDebt === 0 && c.totalPaid === 0) {
+      bal = '<div class="bal none"><div class="cap">Holat</div><div class="big">Qarz yozilmagan</div><p class="sub">“Qarz qo\'shish” tugmasi bilan birinchi yozuvni kiriting.</p></div>';
+    } else if (c.balance > 0) {
+      var pct = c.totalDebt ? Math.min(100, Math.round((c.totalPaid / c.totalDebt) * 100)) : 0;
+      bal = '<div class="bal debt"><div class="cap">Qarz qoldig\'i</div><div class="big">' + money(c.balance) + "</div>" +
+        '<div class="track" aria-hidden="true"><i style="width:' + pct + '%"></i></div>' +
+        '<p class="sub">Jami olgan: ' + money(c.totalDebt) + " · To'lagan: " + money(c.totalPaid) + "</p></div>";
+    } else {
+      bal = '<div class="bal ok"><div class="cap">Holat</div><div class="big">' + ICON.check + " Qarzdorlik yo'q</div>" +
+        '<p class="sub">Jami ' + money(c.totalDebt) + " olgan va to'liq to'lagan." +
+        (c.balance < 0 ? " Ortiqcha to'langan: " + money(-c.balance) + "." : "") + "</p></div>";
+    }
+
+    function delCtl(id) {
+      if (sheet.confirmEntry === id) {
+        return '<span class="ent-ask">O\'chirilsinmi? <button class="link" type="button" data-action="del-entry" data-eid="' + esc(id) + '">Ha</button>' +
+          '<button class="link" type="button" data-action="cancel-del-entry">Yo\'q</button></span>';
+      }
+      return '<button class="icon" type="button" data-action="ask-del-entry" data-eid="' + esc(id) + '" aria-label="Yozuvni o\'chirish">' + ICON.trash + "</button>";
+    }
+
+    var debtList = c.rows.length ? '<ul class="ents">' + c.rows.slice().reverse().map(function (r) {
+      var st = r.left <= 0 ? '<span class="pill ok">To\'langan</span>'
+        : (r.left < r.amount ? '<span class="pill debt">Qoldi ' + money(r.left) + "</span>" : '<span class="pill debt">To\'lanmagan</span>');
+      return '<li class="ent"><div class="ent-main"><b>' + fmtDate(r.date) + "</b>" + (r.note ? "<span>" + esc(r.note) + "</span>" : "") + "</div>" +
+        '<div class="ent-side"><span class="amt">' + money(r.amount) + "</span>" + st + "</div>" + delCtl(r.id) + "</li>";
+    }).join("") + "</ul>" : '<p class="none-t">Hali qarz yozilmagan.</p>';
+
+    var payList = c.pays.length ? '<ul class="ents">' + c.pays.slice().reverse().map(function (p) {
+      return '<li class="ent"><div class="ent-main"><b>' + fmtDate(p.date) + "</b>" + (p.note ? "<span>" + esc(p.note) + "</span>" : "") + "</div>" +
+        '<div class="ent-side"><span class="amt" style="color:var(--ok)">' + money(p.amount) + "</span></div>" + delCtl(p.id) + "</li>";
+    }).join("") + "</ul>" : '<p class="none-t">To\'lov hali yo\'q.</p>';
+
+    var danger = sheet.confirmDelete
+      ? '<div class="danger-zone"><span>Qarzdor va uning barcha yozuvlari o\'chiriladi.</span>' +
+        '<button class="btn danger" type="button" data-action="del">Ha, o\'chirish</button>' +
+        '<button class="btn" type="button" data-action="cancel-del">Bekor qilish</button></div>'
+      : '<div class="danger-zone"><button class="btn danger" type="button" data-action="ask-del">Qarzdorni o\'chirish</button></div>';
+
+    return '<div class="sh"><span></span><div class="sh-btns">' +
+      '<button class="icon" type="button" data-action="edit" aria-label="Ism va telefonni o\'zgartirish">' + ICON.pencil + "</button>" +
+      '<button class="icon" type="button" data-action="close" aria-label="Yopish">' + ICON.x + "</button></div></div>" +
+      '<div class="ident"><span class="avatar lg" style="--h:' + hue(d.name) + '">' + esc(initial(d.name)) + "</span>" +
+      '<div><h2 id="sheetTitle">' + esc(d.name) + "</h2>" + (d.phone ? '<p class="phone">' + esc(d.phone) + "</p>" : "") + "</div></div>" +
+      bal +
+      '<div class="acts"><button class="btn" type="button" data-action="add-debt">Qarz qo\'shish</button>' +
+      '<button class="btn primary" type="button" data-action="add-pay"' + (c.balance > 0 ? "" : " disabled") + ">To'lov qabul qilish</button></div>" +
+      '<div class="cap sec-h">Olingan qarzlar</div>' + debtList +
+      '<div class="cap sec-h">To\'lovlar</div>' + payList + danger;
+  }
+
+  function formHead(title, back) {
+    return '<div class="sh"><h2 id="sheetTitle" class="sh-t">' + title + "</h2>" +
+      '<button class="icon" type="button" data-action="' + back + '" aria-label="Yopish">' + ICON.x + "</button></div>";
+  }
+
+  function sheetHtml() {
+    var d = sheet.id ? find(sheet.id) : null;
+    if (sheet.mode === "detail" && d) return detailHtml(d);
+
+    if (sheet.mode === "new") {
+      return formHead("Yangi qarzdor", "close") +
+        '<form data-form="new" novalidate>' +
+        fieldHtml("fname", "Ism", 'name="fname" maxlength="60" autocomplete="off" required value="' + esc(sheet.name || "") + '"') +
+        fieldHtml("fphone", "Telefon (ixtiyoriy)", 'type="tel" inputmode="tel" maxlength="24" autocomplete="off" placeholder="+998 90 000 00 00"') +
+        '<div class="cap part-h">Olgan qarzi (ixtiyoriy)</div>' +
+        '<div class="two">' +
+        fieldHtml("famount", "Summa, so'm", 'class="js-amt" inputmode="numeric" autocomplete="off" placeholder="0"') +
+        fieldHtml("fdate", "Sana", 'type="date" value="' + today() + '"') + "</div>" +
+        fieldHtml("fnote", "Izoh (ixtiyoriy)", 'maxlength="80" autocomplete="off" placeholder="Nima uchun olgani"') +
+        '<p class="err" id="ferr" role="alert" hidden></p>' +
+        '<div class="form-acts"><button class="btn" type="button" data-action="close">Bekor qilish</button><button class="btn primary" type="submit">Saqlash</button></div></form>';
+    }
+
+    if (sheet.mode === "edit" && d) {
+      return formHead("Qarzdorni tahrirlash", "back") +
+        '<form data-form="edit" novalidate>' +
+        fieldHtml("fname", "Ism", 'maxlength="60" autocomplete="off" required value="' + esc(d.name) + '"') +
+        fieldHtml("fphone", "Telefon", 'type="tel" inputmode="tel" maxlength="24" autocomplete="off" value="' + esc(d.phone || "") + '"') +
+        '<p class="err" id="ferr" role="alert" hidden></p>' +
+        '<div class="form-acts"><button class="btn" type="button" data-action="back">Bekor qilish</button><button class="btn primary" type="submit">Saqlash</button></div></form>';
+    }
+
+    if (sheet.mode === "entry" && d) {
+      var isPay = sheet.kind === "pay";
+      var c = calc(d);
+      return formHead(isPay ? "To'lov qabul qilish" : "Qarz qo'shish", "back") +
+        '<p class="sub">' + esc(d.name) + (isPay ? " · qoldiq " + money(c.balance) : "") + "</p>" +
+        '<form data-form="entry" novalidate>' +
+        '<div class="two">' +
+        fieldHtml("famount", "Summa, so'm", 'class="js-amt" inputmode="numeric" autocomplete="off" placeholder="0"',
+          isPay ? '<button class="link" type="button" data-action="fill-all">Hammasi</button>' : "") +
+        fieldHtml("fdate", "Sana", 'type="date" value="' + today() + '"') + "</div>" +
+        fieldHtml("fnote", "Izoh (ixtiyoriy)", 'maxlength="80" autocomplete="off"') +
+        '<p class="err" id="ferr" role="alert" hidden></p>' +
+        '<div class="form-acts"><button class="btn" type="button" data-action="back">Bekor qilish</button><button class="btn primary" type="submit">Saqlash</button></div></form>';
+    }
+    return "";
+  }
+
+  function renderSheet() {
+    var root = $("#sheetRoot");
+    if (!sheet) {
+      root.hidden = true;
+      root.innerHTML = "";
+      document.body.style.overflow = "";
+      return;
+    }
+    var inner = sheetHtml();
+    if (!inner) { sheet = null; renderSheet(); return; }
+    var prevScroll = 0;
+    var old = root.querySelector(".sheet");
+    if (old) prevScroll = old.scrollTop;
+    root.hidden = false;
+    document.body.style.overflow = "hidden";
+    root.innerHTML = '<div class="scrim" data-action="close"></div><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">' + inner + "</section>";
+    var sh = root.querySelector(".sheet");
+    if (sheet.mode === "detail") { sh.scrollTop = prevScroll; }
+    else {
+      var f = sh.querySelector("input");
+      if (f) { try { f.focus({ preventScroll: true }); } catch (e) {} }
+    }
+  }
+
+  function renderAll(fromSnapshot) {
+    renderList();
+    if (sheet) {
+      if (sheet.id && !find(sheet.id)) { sheet = null; renderSheet(); return; }
+      if (!fromSnapshot || sheet.mode === "detail") renderSheet();
+    }
+  }
+
+  function showErr(msg) {
+    var e = $("#ferr");
+    if (e) { e.textContent = msg; e.hidden = false; }
+  }
+
+  /* samples */
+  function addSamples() {
+    var a = {
+      id: uid("d_"), name: "Aziz Karimov (namuna)", phone: "+998 90 123 45 67", createdAt: Date.now(),
+      entries: [
+        { id: uid("e_"), type: "debt", amount: 500000, date: daysAgo(40), note: "Oziq-ovqat uchun" },
+        { id: uid("e_"), type: "debt", amount: 300000, date: daysAgo(12), note: "Telefon ta'miri" },
+        { id: uid("e_"), type: "pay", amount: 200000, date: daysAgo(5), note: "" }
+      ]
+    };
+    var b = {
+      id: uid("d_"), name: "Dilnoza Rahimova (namuna)", phone: "", createdAt: Date.now(),
+      entries: [
+        { id: uid("e_"), type: "debt", amount: 150000, date: daysAgo(30), note: "Yo'l kira" },
+        { id: uid("e_"), type: "pay", amount: 150000, date: daysAgo(3), note: "" }
+      ]
+    };
+    debtors.push(a, b);
+    save(a);
+    save(b);
+    renderAll();
+    toast("Namuna qo'shildi. Ularni o'chirib tashlashingiz mumkin.");
+  }
+
+  /* events */
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-action]");
+    if (!t) return;
+    var a = t.dataset.action;
+
+    if (a === "filter") {
+      filter = t.dataset.f;
+      Array.prototype.forEach.call(document.querySelectorAll(".chip"), function (c) {
+        c.setAttribute("aria-pressed", c.dataset.f === filter ? "true" : "false");
+      });
+      renderList();
+    } else if (a === "open") {
+      sheet = { mode: "detail", id: t.dataset.id };
+      renderSheet();
+    } else if (a === "new") {
+      sheet = { mode: "new" };
+      renderSheet();
+    } else if (a === "new-from-q") {
+      sheet = { mode: "new", name: query.trim() };
+      renderSheet();
+    } else if (a === "sample") {
+      addSamples();
+    } else if (a === "close") {
+      sheet = null;
+      renderSheet();
+    } else if (a === "back") {
+      sheet = sheet && sheet.id ? { mode: "detail", id: sheet.id } : null;
+      renderSheet();
+    } else if (a === "edit") {
+      sheet = { mode: "edit", id: sheet.id };
+      renderSheet();
+    } else if (a === "add-debt") {
+      sheet = { mode: "entry", kind: "debt", id: sheet.id };
+      renderSheet();
+    } else if (a === "add-pay") {
+      sheet = { mode: "entry", kind: "pay", id: sheet.id };
+      renderSheet();
+    } else if (a === "fill-all") {
+      var d0 = find(sheet.id);
+      var inp = $("#famount");
+      if (d0 && inp) inp.value = grp(Math.max(0, calc(d0).balance)).replace(/ /g, " ");
+    } else if (a === "ask-del") {
+      sheet.confirmDelete = true;
+      renderSheet();
+    } else if (a === "cancel-del") {
+      sheet.confirmDelete = false;
+      renderSheet();
+    } else if (a === "del") {
+      var id = sheet.id;
+      sheet = null;
+      removeDebtor(id);
+      renderAll();
+      renderSheet();
+      toast("Qarzdor o'chirildi");
+    } else if (a === "ask-del-entry") {
+      sheet.confirmEntry = t.dataset.eid;
+      renderSheet();
+    } else if (a === "cancel-del-entry") {
+      sheet.confirmEntry = null;
+      renderSheet();
+    } else if (a === "del-entry") {
+      var dd = find(sheet.id);
+      if (dd) {
+        var eid = t.dataset.eid;
+        dd.entries = dd.entries.filter(function (x) { return x.id !== eid; });
+        save(dd);
+      }
+      sheet.confirmEntry = null;
+      renderAll();
+      toast("Yozuv o'chirildi");
+    }
+  });
+
+  document.addEventListener("input", function (e) {
+    var t = e.target;
+    if (t.classList && t.classList.contains("js-amt")) {
+      var v = t.value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+      t.value = v.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    } else if (t.id === "q") {
+      query = t.value;
+      renderList();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && sheet) {
+      sheet = sheet.mode !== "detail" && sheet.mode !== "new" && sheet.id ? { mode: "detail", id: sheet.id } : null;
+      renderSheet();
+    }
+  });
+
+  document.addEventListener("submit", function (e) {
+    var f = e.target;
+    var kind = f && f.dataset && f.dataset.form;
+    if (!kind) return;
+    e.preventDefault();
+    function val(id) { var el = f.querySelector("#" + id); return el ? el.value : ""; }
+
+    if (kind === "new") {
+      var name = val("fname").trim();
+      if (!name) { showErr("Ismni yozing."); return; }
+      var amount = parseAmt(val("famount"));
+      var d = { id: uid("d_"), name: name, phone: val("fphone").trim(), createdAt: Date.now(), entries: [] };
+      if (amount > 0) d.entries.push({ id: uid("e_"), type: "debt", amount: amount, date: val("fdate") || today(), note: val("fnote").trim() });
+      debtors.push(d);
+      save(d);
+      sheet = { mode: "detail", id: d.id };
+      renderAll();
+      toast("Qarzdor qo'shildi");
+    } else if (kind === "edit") {
+      var d1 = find(sheet.id);
+      var nm = val("fname").trim();
+      if (!nm) { showErr("Ism bo'sh bo'lmasligi kerak."); return; }
+      if (d1) { d1.name = nm; d1.phone = val("fphone").trim(); save(d1); }
+      sheet = { mode: "detail", id: sheet.id };
+      renderAll();
+      toast("Saqlandi");
+    } else if (kind === "entry") {
+      var d2 = find(sheet.id);
+      if (!d2) return;
+      var amt = parseAmt(val("famount"));
+      if (amt <= 0) { showErr("Summani kiriting."); return; }
+      if (sheet.kind === "pay") {
+        var left = calc(d2).balance;
+        if (amt > left) { showErr("To'lov qarzdan oshib ketdi. Qoldiq: " + money(left) + "."); return; }
+      }
+      d2.entries = d2.entries.concat([{ id: uid("e_"), type: sheet.kind, amount: amt, date: val("fdate") || today(), note: val("fnote").trim() }]);
+      save(d2);
+      sheet = { mode: "detail", id: d2.id };
+      renderAll();
+      toast(sheet && calc(d2).balance <= 0 ? "Qarz to'liq to'landi" : "Saqlandi");
+    }
+  });
+
+  /* start */
+  function clean(x, id) {
+    var entries = Array.isArray(x.entries) ? x.entries : [];
+    return {
+      id: id,
+      name: String(x.name || ""),
+      phone: String(x.phone || ""),
+      createdAt: Number(x.createdAt) || 0,
+      entries: entries.filter(function (en) { return en && (en.type === "debt" || en.type === "pay"); }).map(function (en) {
+        return { id: String(en.id || uid("e_")), type: en.type, amount: Number(en.amount) || 0, date: String(en.date || today()), note: String(en.note || "") };
+      })
+    };
+  }
+  function useLocal() {
+    backend = "local";
+    col = null;
+    debtors = lsLoad().map(function (x) { return clean(x, String(x.id || uid("d_"))); });
+    ready = true;
+    renderAll();
+  }
+
+  renderList();
+
+  (async function init() {
+    var db = null, user = null;
+    try {
+      if (window.claude && window.claude.use) {
+        var r = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+        db = r[0];
+        user = r[1];
+      }
+    } catch (e) {}
+    var id = null;
+    try { id = user ? await user.id() : null; } catch (e) {}
+    if (db && id) {
+      backend = "db";
+      col = db.collection("data/users/" + id);
+      col.onSnapshot(function (snap) {
+        debtors = snap.docs.map(function (s) { return clean(s.data() || {}, s.id); });
+        ready = true;
+        renderAll(true);
+      }, function () {
+        useLocal();
+      });
+    } else {
+      useLocal();
+    }
+  })();
+})();
+</script>
+
+</body></html>
