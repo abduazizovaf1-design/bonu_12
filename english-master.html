@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<title>English Master</title>
+<style>
+:root{
+  --primary:#4f46e5; --primary-2:#7c3aed; --accent:#2563eb;
+  --bg:#f5f6ff; --card:#ffffff; --text:#1e1b4b; --muted:#6b7280;
+  --border:#e5e7f5; --ok:#16a34a; --bad:#dc2626; --warn:#d97706;
+  --shadow:0 4px 18px rgba(79,70,229,.10);
+  --grad:linear-gradient(135deg,#2563eb,#7c3aed);
+  --nav-h:64px;
+}
+[data-theme="dark"]{
+  --bg:#0f1020; --card:#1a1b33; --text:#eef0ff; --muted:#9aa0c3;
+  --border:#2b2d4f; --shadow:0 4px 18px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;transition:background .3s,color .3s}
+#app{max-width:880px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg);backdrop-filter:blur(8px)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem}
+.logo{background:var(--grad);color:#fff;border-radius:10px;padding:5px 8px;font-size:.85rem}
+.icon-btn{background:var(--card);border:1px solid var(--border);border-radius:12px;width:40px;height:40px;font-size:1.1rem;cursor:pointer;margin-left:6px}
+main{flex:1;padding:8px 16px calc(var(--nav-h) + 28px);animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:1.5rem;margin:6px 0 4px} h2{font-size:1.15rem;margin:18px 0 8px} h3{font-size:1rem;margin:10px 0 6px}
+p{margin:6px 0}
+.muted{color:var(--muted);font-size:.9rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;margin:10px 0;box-shadow:var(--shadow)}
+.hero{background:var(--grad);color:#fff;border-radius:22px;padding:20px;margin:10px 0;box-shadow:var(--shadow)}
+.hero .muted{color:rgba(255,255,255,.8)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.grid.two{grid-template-columns:1fr 1fr}
+.stat{text-align:center}.stat b{display:block;font-size:1.5rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:14px;padding:12px 18px;font-size:.95rem;font-weight:700;cursor:pointer;background:var(--grad);color:#fff;transition:transform .1s,opacity .2s}
+.btn:active{transform:scale(.97)}
+.btn.sec{background:var(--card);color:var(--primary);border:1.5px solid var(--primary)}
+.btn.ok{background:var(--ok)} .btn.bad{background:var(--bad)} .btn.warn{background:var(--warn)}
+.btn.sm{padding:8px 12px;font-size:.85rem;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row.between{justify-content:space-between}
+.chip{display:inline-block;padding:4px 10px;border-radius:99px;background:rgba(124,58,237,.12);color:var(--primary-2);font-size:.78rem;font-weight:700}
+.chip.active{background:var(--primary);color:#fff}
+.bar{height:10px;border-radius:99px;background:var(--border);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--grad);border-radius:99px;transition:width .5s}
+.list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin:8px 0;cursor:pointer}
+.list-item:hover{border-color:var(--primary)}
+.example{border-left:4px solid var(--primary);padding:8px 12px;margin:8px 0;background:rgba(79,70,229,.06);border-radius:0 12px 12px 0}
+.example .en{font-weight:700}.example .uz{color:var(--muted)}
+.formula{background:var(--grad);color:#fff;padding:12px 14px;border-radius:12px;font-family:ui-monospace,monospace;margin:8px 0}
+.mistake{border-left:4px solid var(--bad);padding:8px 12px;margin:8px 0;background:rgba(220,38,38,.07);border-radius:0 12px 12px 0}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:14px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:.95rem;cursor:pointer}
+.opt.sel{border-color:var(--primary);background:rgba(79,70,229,.08)}
+.opt.right{border-color:var(--ok);background:rgba(22,163,74,.12)}
+.opt.wrong{border-color:var(--bad);background:rgba(220,38,38,.1)}
+.explain{margin-top:8px;padding:10px 12px;border-radius:12px;background:rgba(37,99,235,.08);font-size:.9rem}
+input[type=text],input[type=search],select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:1rem;font-family:inherit}
+textarea{min-height:90px;resize:vertical}
+label{font-weight:600;font-size:.9rem;display:block;margin:10px 0 4px}
+.flash{perspective:900px;margin:12px 0}
+.flash-inner{min-height:200px;border-radius:22px;background:var(--grad);color:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;cursor:pointer;box-shadow:var(--shadow)}
+.flash-inner .big{font-size:2rem;font-weight:800}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;z-index:30;max-width:880px;margin:0 auto}
+.bottom-nav button{flex:1;background:none;border:0;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;font-size:1.2rem}
+.bottom-nav small{font-size:.68rem;font-weight:700}
+.bottom-nav button.active{color:var(--primary)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,30px);background:#111827;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.3s;z-index:60;font-size:.9rem;max-width:90%}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow-y:auto;padding:4px}
+.msg{padding:10px 14px;border-radius:16px;max-width:88%;white-space:pre-wrap}
+.msg.ai{background:var(--card);border:1px solid var(--border);align-self:flex-start}
+.msg.user{background:var(--grad);color:#fff;align-self:flex-end}
+.fb{border:1px dashed var(--primary);border-radius:14px;padding:10px 12px;margin-top:6px;font-size:.88rem;background:rgba(79,70,229,.05);color:var(--text)}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.6rem;animation:pulse 2.4s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(124,58,237,.15)}}
+.notice{padding:10px 12px;border-radius:12px;background:rgba(217,119,6,.12);border:1px solid var(--warn);font-size:.88rem;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px;border-bottom:1px solid var(--border);text-align:left}
+.overflow{overflow-x:auto}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:70;overflow:hidden}
+#confetti i{position:absolute;top:-10px;width:9px;height:14px;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.8}}
+.week{display:flex;gap:6px;align-items:flex-end;height:110px}
+.week div{flex:1;text-align:center;font-size:.7rem}
+.week i{display:block;background:var(--grad);border-radius:6px 6px 0 0;min-height:3px}
+@media(min-width:700px){main{padding-left:28px;padding-right:28px}.grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand"><span class="logo">EM</span><span>English Master</span></div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="btnSearch" aria-label="Search">🔍</button>
+      <button class="icon-btn" id="btnTheme" aria-label="Theme">🌙</button>
+    </div>
+  </header>
+
+  <main id="view" tabindex="-1"></main>
+
+  <nav class="bottom-nav" id="nav">
+    <button data-route="home" class="active"><span>🏠</span><small>Home</small></button>
+    <button data-route="lessons"><span>📚</span><small>Lessons</small></button>
+    <button data-route="practice"><span>🎯</span><small>Practice</small></button>
+    <button data-route="progress"><span>📈</span><small>Progress</small></button>
+    <button data-route="profile"><span>👤</span><small>Profile</small></button>
+  </nav>
+</div>
+
+<div id="toast" class="toast" role="status"></div>
+<div id="confetti"></div>
+
+<script>
+// Grammar lessons. Q(question, options, correctIndex, explanation)
+const Q = (q, o, a, e) => ({ q, o, a, e });
+const EX = (q, a, e) => ({ q, a, e });
+
+window.GRAMMAR = [
+{
+  id: "subject-pronouns", title: "Subject pronouns", uz: "Kishilik olmoshlari", level: "A1", cat: "Boshlang'ich",
+  def: "Subject pronoun — gapda ish-harakatni bajaruvchi (ega) o'rnida keladigan olmosh: I, you, he, she, it, we, they.",
+  explain: "Ingliz tilida gap deyarli har doim ega bilan boshlanadi. O'zbek tilida 'boraman' desak, 'men' so'zi yashirin bo'ladi, inglizcha esa 'I go' deb albatta aytish kerak. He — erkak kishi, she — ayol kishi, it — jonsiz narsa yoki hayvon uchun. You ham 'sen', ham 'siz', ham 'sizlar' ma'nosida ishlatiladi.",
+  formula: "I / you / he / she / it / we / they + fe'l",
+  uses: ["Gap egasini ko'rsatish.", "Ismni takrorlamaslik uchun: Ali → he, Mary → she.", "Hayvon va narsalar uchun it."],
+  forms: { aff: "She works here.", neg: "She does not work here.", q: "Does she work here?", short: "Yes, she does. / No, she doesn't." },
+  examples: [["I am a student.", "Men o'quvchiman."],["You are my friend.", "Sen mening do'stimsan."],["He plays football.", "U (erkak) futbol o'ynaydi."],["She reads a book.", "U (ayol) kitob o'qiydi."],["It is a cat.", "Bu mushuk."],["We live in Tashkent.", "Biz Toshkentda yashaymiz."],["They are teachers.", "Ular o'qituvchilar."]],
+  mistakes: [["Is a teacher.", "He is a teacher.", "Ega tushib qolmasligi kerak."],["Him is tall.", "He is tall.", "Egalik o'rnida him emas, he ishlatiladi."]],
+  exercises: [EX("Ali is my brother. ___ is 15. (he/she)", "he", "Ali — erkak, shuning uchun he."),EX("Anna and I are friends. ___ study together. (we/they)", "we", "Anna va men = biz."),EX("The book is on the table. ___ is new. (it/he)", "it", "Narsa uchun it."),EX("My parents are at home. ___ are watching TV. (we/they)", "they", "Ular = they."),EX("Dilnoza is a doctor. ___ works in a hospital. (he/she)", "she", "Ayol uchun she.")],
+  quiz: [
+    Q("Mary is my sister. ___ is a nurse.", ["He","She","It","They"], 1, "Mary — ayol, she."),
+    Q("Tom and Jack are brothers. ___ are tall.", ["We","He","They","It"], 2, "Ikki kishi — they."),
+    Q("The dog is hungry. ___ wants food.", ["He","It","She","We"], 1, "Hayvon uchun odatda it."),
+    Q("You and I are classmates. ___ study English.", ["They","You","We","She"], 2, "Siz va men = biz (we)."),
+    Q("___ am happy today.", ["I","He","She","It"], 0, "am faqat I bilan."),
+    Q("Which pronoun is for a man?", ["she","he","it","we"], 1, "he — erkak kishi."),
+    Q("My car is red. ___ is very fast.", ["It","She","He","They"], 0, "Narsa — it."),
+    Q("Aziza and Malika are friends. ___ live near me.", ["She","We","They","It"], 2, "Ikki ayol — they."),
+    Q("___ is a teacher. (Mr. Brown)", ["She","He","It","They"], 1, "Mr. — erkak, he."),
+    Q("Uzbek 'Siz' (bir kishiga, hurmat) = ?", ["you","he","they","it"], 0, "You — sen/siz/sizlar.")
+  ]
+},
+{
+  id: "verb-to-be", title: "Verb to be (am / is / are)", uz: "To be fe'li", level: "A1", cat: "Boshlang'ich",
+  def: "To be — 'bo'lmoq' fe'li. Biror kishi yoki narsa kim/nima ekanini, qanday ekanini, qayerda ekanini bildiradi.",
+  explain: "O'zbek tilida 'Men o'quvchiman' desak, alohida fe'l kerak emas (-man qo'shimchasi bor). Inglizchada esa albatta am/is/are kerak. I bilan am, he/she/it bilan is, we/you/they bilan are ishlatiladi. Inkor uchun not qo'shiladi, so'roq uchun fe'l gap boshiga chiqadi.",
+  formula: "I am | he/she/it is | we/you/they are",
+  uses: ["Kim ekanini aytish: I am a doctor.", "Yosh va holatni aytish: She is 20. He is tired.", "Joyni aytish: They are at home."],
+  forms: { aff: "I am a student.", neg: "I am not a student. / He is not (isn't) here.", q: "Are they friends?", short: "Yes, they are. / No, they aren't." },
+  examples: [["I am a student.", "Men o'quvchiman."],["She is not at home.", "U uyda emas."],["Are they friends?", "Ular do'stmi?"],["We are from Uzbekistan.", "Biz O'zbekistondanmiz."],["He is twenty years old.", "U yigirma yoshda."],["It is cold today.", "Bugun sovuq."],["Is your mother at work?", "Onangiz ishdami?"]],
+  mistakes: [["I are a student.", "I am a student.", "I faqat am bilan keladi."],["She not is happy.", "She is not happy.", "not fe'ldan keyin turadi."],["He have 20 years.", "He is 20 years old.", "Yoshni aytishda have emas, to be ishlatiladi."]],
+  exercises: [EX("I ___ from Samarkand. (am/is/are)", "am", "I bilan am."),EX("She ___ my teacher. (am/is/are)", "is", "she bilan is."),EX("They ___ at school. (am/is/are)", "are", "they bilan are."),EX("___ you ready? (Am/Is/Are)", "Are", "you bilan are."),EX("It ___ not a problem. (am/is/are)", "is", "it bilan is.")],
+  quiz: [
+    Q("He ___ a doctor.", ["am","is","are","be"], 1, "he + is."),
+    Q("We ___ in the classroom.", ["is","am","are","be"], 2, "we + are."),
+    Q("I ___ 18 years old.", ["is","are","am","be"], 2, "I + am."),
+    Q("___ she your sister?", ["Are","Is","Am","Do"], 1, "she + is, so'roqda Is she...?"),
+    Q("They ___ not happy.", ["is","am","are","do"], 2, "they + are."),
+    Q("Choose the correct negative: 'He is a teacher.'", ["He not is a teacher.","He is not a teacher.","He does not a teacher.","He no is a teacher."], 1, "is + not."),
+    Q("Short answer: 'Are you a student?'", ["Yes, I am.","Yes, I is.","Yes, I do.","Yes, I are."], 0, "Are you...? — Yes, I am."),
+    Q("The books ___ on the table.", ["is","are","am","be"], 1, "Ko'plik — are."),
+    Q("My name ___ Ali.", ["am","are","is","be"], 2, "name birlik — is."),
+    Q("___ I late?", ["Is","Are","Am","Do"], 2, "I bilan Am I...?")
+  ]
+},
+{
+  id: "articles", title: "Articles: a, an, the", uz: "Artikllar", level: "A1", cat: "Boshlang'ich",
+  def: "Artikl — otdan oldin keladigan kichik so'z. Ingliz tilida uchta artikl bor: a, an, the.",
+  explain: "A va an — noaniq artikllar: biror narsani birinchi marta aytganda yoki 'bitta' ma'nosida. A undosh tovush bilan boshlangan so'z oldidan (a book), an unli tovush bilan boshlangan so'z oldidan (an apple) ishlatiladi. The — aniq artikl: ikkala suhbatdosh qaysi narsa haqida gapirayotganini biladi (The book is on the table). Ko'plik va sanalmaydigan otlar oldida a/an ishlatilmaydi.",
+  formula: "a + undosh tovush | an + unli tovush | the + aniq narsa",
+  uses: ["a/an — birinchi marta aytilgan narsa.", "the — oldin aytilgan yoki yagona narsa (the sun, the moon).", "Artiklsiz — umumiy ko'plik va sanalmaydigan otlar: I like music."],
+  forms: { aff: "I have a dog.", neg: "I don't have a dog.", q: "Do you have a dog?", short: "Yes, I do. / No, I don't." },
+  examples: [["I have a book.", "Mening bitta kitobim bor."],["She eats an apple.", "U olma yeydi."],["The apple is red.", "Olma qizil (o'sha olma)."],["He is an engineer.", "U muhandis."],["The sun is hot.", "Quyosh issiq."],["It is an hour.", "Bu bir soat. (h aytilmaydi, shuning uchun an)"],["She is a university student.", "U universitet talabasi. (yu- undosh tovush, shuning uchun a)"]],
+  mistakes: [["She is a engineer.", "She is an engineer.", "engineer unli tovush bilan boshlanadi."],["I like the music.", "I like music.", "Umumiy ma'noda artikl kerak emas."],["I have a books.", "I have books.", "Ko'plik oldida a ishlatilmaydi."]],
+  exercises: [EX("I have ___ orange. (a/an)", "an", "orange unli bilan boshlanadi."),EX("She is ___ teacher. (a/an)", "a", "teacher undosh bilan boshlanadi."),EX("___ moon is bright tonight. (A/The)", "The", "Oy yagona."),EX("He is ___ honest man. (a/an)", "an", "honest: h aytilmaydi."),EX("I saw a cat. ___ cat was black. (A/The)", "The", "Oldin aytilgan mushuk.")],
+  quiz: [
+    Q("I need ___ umbrella.", ["a","an","the","—"], 1, "umbrella unli bilan boshlanadi."),
+    Q("She is ___ doctor.", ["a","an","the","—"], 0, "doctor undosh bilan boshlanadi."),
+    Q("Open ___ window, please. (aniq deraza)", ["a","an","the","—"], 2, "Aniq narsa — the."),
+    Q("He is ___ European.", ["an","a","the","—"], 1, "European 'yu' bilan boshlanadi — a."),
+    Q("I like ___ music.", ["a","an","the","—"], 3, "Umumiy ma'noda artikl kerak emas."),
+    Q("We saw ___ elephant at the zoo.", ["a","an","the","—"], 1, "elephant unli."),
+    Q("___ Earth goes around ___ Sun.", ["The/the","A/a","An/an","—/—"], 0, "Yagona narsalar — the."),
+    Q("It takes ___ hour.", ["a","an","the","—"], 1, "hour: h aytilmaydi — an."),
+    Q("She has ___ car. ___ car is new.", ["a / The","the / A","an / The","a / A"], 0, "Birinchi marta a, ikkinchi marta the."),
+    Q("Which is correct?", ["an university","a university","the university's a","an uniform"], 1, "university — 'yu' tovushi, a.")
+  ]
+},
+{
+  id: "plural-nouns", title: "Singular and plural nouns", uz: "Birlik va ko'plik", level: "A1", cat: "Boshlang'ich",
+  def: "Ko'plik shakli — bir nechta narsani bildiradi. Ko'pchilik otlarga -s qo'shiladi.",
+  explain: "Ko'plik yasash qoidalari: 1) Ko'pchilik otlarga -s: book → books. 2) -s, -x, -ch, -sh, -o bilan tugasa -es: bus → buses, box → boxes. 3) Undosh + y bilan tugasa -ies: city → cities. 4) -f/-fe bilan tugasa -ves: knife → knives. 5) Tartibsiz: man → men, child → children, foot → feet, person → people.",
+  formula: "noun + s / es / ies | tartibsiz shakllar",
+  uses: ["Ikki va undan ortiq narsani aytishda.", "Ko'plik bilan are, birlik bilan is ishlatiladi."],
+  forms: { aff: "There are two boxes.", neg: "There aren't any boxes.", q: "Are there any boxes?", short: "Yes, there are." },
+  examples: [["one book — two books", "bitta kitob — ikkita kitob"],["a box — boxes", "quti — qutilar"],["a city — cities", "shahar — shaharlar"],["a child — children", "bola — bolalar"],["a man — men", "erkak — erkaklar"],["a foot — feet", "oyoq — oyoqlar"],["a knife — knives", "pichoq — pichoqlar"]],
+  mistakes: [["two childs", "two children", "child tartibsiz ko'plik."],["three man", "three men", "Ko'plikda men."],["a cities", "a city / cities", "a bilan faqat birlik."]],
+  exercises: [EX("one watch — two ___", "watches", "-ch bilan tugasa -es."),EX("one baby — two ___", "babies", "undosh + y → ies."),EX("one tooth — two ___", "teeth", "Tartibsiz."),EX("one woman — two ___", "women", "Tartibsiz."),EX("one leaf — two ___", "leaves", "f → ves.")],
+  quiz: [
+    Q("Plural of 'bus':", ["buss","buses","bus","busies"], 1, "-s bilan tugasa -es."),
+    Q("Plural of 'city':", ["citys","cities","cityes","city"], 1, "undosh + y → ies."),
+    Q("Plural of 'child':", ["childs","childes","children","childrens"], 2, "Tartibsiz."),
+    Q("Plural of 'man':", ["mans","mens","men","manes"], 2, "Tartibsiz."),
+    Q("Plural of 'box':", ["boxs","boxes","boxies","box"], 1, "-x → -es."),
+    Q("Plural of 'day':", ["days","daies","dayes","dayies"], 0, "unli + y → faqat -s."),
+    Q("Plural of 'person' (oddiy):", ["persons","people","persones","peoples"], 1, "people ko'p ishlatiladi."),
+    Q("Plural of 'knife':", ["knifes","knives","knifs","knifees"], 1, "-fe → -ves."),
+    Q("Plural of 'foot':", ["foots","feet","feets","footes"], 1, "Tartibsiz."),
+    Q("Plural of 'tomato':", ["tomatos","tomatoes","tomatoies","tomato"], 1, "-o → -es (ko'p hollarda).")
+  ]
+},
+{
+  id: "present-simple", title: "Present Simple", uz: "Oddiy hozirgi zamon", level: "A1", cat: "Zamonlar",
+  def: "Present Simple — odatiy, doimiy va takrorlanuvchi ish-harakatlar hamda umumiy haqiqatlar uchun zamon.",
+  explain: "Har kuni, har hafta takrorlanadigan ishlarni aytganda ishlatamiz. He/she/it bilan fe'lga -s yoki -es qo'shiladi. Inkor va so'roq gaplarda do/does yordamchi fe'li ishlatiladi, bunda asosiy fe'l -s olmaydi. -s, -sh, -ch, -x, -o bilan tugagan fe'llarga -es qo'shiladi (watch → watches), undosh + y → ies (study → studies).",
+  formula: "Subject + V1 (he/she/it + V1-s/es)\nNeg: Subject + do/does + not + V1\nQ: Do/Does + subject + V1?",
+  uses: ["Odat va rejalar: I get up at 7.", "Umumiy haqiqat: Water boils at 100°C.", "Jadval: The train leaves at 9.", "Doimiy holat: She lives in Bukhara."],
+  forms: { aff: "I study English every day.", neg: "I do not (don't) study French. He does not (doesn't) study.", q: "Does she study English?", short: "Yes, she does. / No, she doesn't." },
+  examples: [["I study English every day.", "Men har kuni ingliz tilini o'rganaman."],["She studies English every day.", "U har kuni ingliz tilini o'rganadi."],["I do not study French.", "Men fransuz tilini o'rganmayman."],["Does she study English?", "U ingliz tilini o'rganadimi?"],["The sun rises in the east.", "Quyosh sharqdan chiqadi."],["He usually drinks tea in the morning.", "U odatda ertalab choy ichadi."],["They don't work on Sundays.", "Ular yakshanba kuni ishlamaydi."]],
+  mistakes: [["She go to school.", "She goes to school.", "he/she/it bilan -s/-es kerak."],["Does she studies?", "Does she study?", "does dan keyin fe'l oddiy shaklda."],["I am go to school every day.", "I go to school every day.", "Present Simple'da am/is/are bilan fe'l ishlatilmaydi."]],
+  signals: "always, usually, often, sometimes, never, every day, on Mondays",
+  exercises: [EX("She ___ (work) in a bank.", "works", "she + -s."),EX("They ___ (not/like) coffee.", "don't like", "they + don't + V1."),EX("___ he ___ (play) football? (Do/Does + play)", "Does play", "he bilan Does."),EX("My brother ___ (watch) TV every night.", "watches", "-ch → -es."),EX("We ___ (go) to school by bus.", "go", "we — -s yo'q.")],
+  quiz: [
+    Q("He ___ to work by bus.", ["go","goes","going","is go"], 1, "he + goes."),
+    Q("I ___ coffee in the morning.", ["drinks","drink","drinking","am drink"], 1, "I + V1."),
+    Q("She ___ not like fish.", ["do","does","is","are"], 1, "she + does not."),
+    Q("___ you speak English?", ["Does","Do","Are","Is"], 1, "you + Do."),
+    Q("Water ___ at 100 degrees.", ["boil","boils","boiling","is boil"], 1, "Umumiy haqiqat, it + -s."),
+    Q("Correct sentence:", ["She don't like tea.","She doesn't like tea.","She doesn't likes tea.","She not like tea."], 1, "doesn't + V1."),
+    Q("study → he ___", ["studys","studies","studyes","studying"], 1, "undosh + y → ies."),
+    Q("Signal word of Present Simple:", ["now","yesterday","usually","tomorrow"], 2, "usually — odat."),
+    Q("Does she ___ here?", ["lives","live","living","lived"], 1, "does dan keyin V1."),
+    Q("They ___ football on Sundays.", ["plays","play","playing","is play"], 1, "they + V1.")
+  ]
+},
+{
+  id: "present-continuous", title: "Present Continuous", uz: "Hozirgi davomli zamon", level: "A1", cat: "Zamonlar",
+  def: "Present Continuous — hozir, aynan shu payt davom etayotgan harakat uchun zamon.",
+  explain: "Gap payti sodir bo'layotgan ishlarni aytamiz: 'Men hozir kitob o'qiyapman'. am/is/are + fe'l-ing. Imlo: e bilan tugasa e tushadi (make → making), qisqa unli + undosh bo'lsa undosh ikkilanadi (run → running). Stative fe'llar (know, like, love, want) odatda continuous bo'lmaydi.",
+  formula: "Subject + am/is/are + V-ing",
+  uses: ["Hozir bo'layotgan ish: I am reading now.", "Shu kunlarda davom etayotgan ish: I am studying for exams.", "Yaqin kelajakdagi reja: I am meeting him tomorrow."],
+  forms: { aff: "I am reading a book now.", neg: "She is not (isn't) sleeping.", q: "Are they playing?", short: "Yes, they are. / No, they aren't." },
+  examples: [["I am reading a book now.", "Men hozir kitob o'qiyapman."],["She is cooking dinner.", "U kechki ovqat tayyorlayapti."],["They are not watching TV.", "Ular televizor ko'rmayapti."],["Are you listening to me?", "Meni tinglayapsizmi?"],["It is raining.", "Yomg'ir yog'yapti."],["We are learning English.", "Biz ingliz tilini o'rganyapmiz."],["He is running in the park.", "U bog'da yugurayapti."]],
+  mistakes: [["I reading now.", "I am reading now.", "am/is/are tushib qolmasligi kerak."],["She is knowing him.", "She knows him.", "know — stative fe'l."],["He is makeing tea.", "He is making tea.", "e tushadi."]],
+  signals: "now, at the moment, right now, look!, listen!, today",
+  exercises: [EX("She ___ (study) now.", "is studying", "she + is + V-ing."),EX("They ___ (not/play) football.", "are not playing", "they + are not + V-ing."),EX("I ___ (run) in the park.", "am running", "run → running."),EX("___ you ___ (listen) to music? (Are/listen)", "Are listening", "you + Are."),EX("He ___ (make) a cake.", "is making", "make → making.")],
+  quiz: [
+    Q("I ___ a letter now.", ["write","am writing","writes","wrote"], 1, "now → continuous."),
+    Q("She ___ TV at the moment.", ["watches","is watching","watch","are watching"], 1, "she + is + V-ing."),
+    Q("Look! It ___.", ["rains","is raining","rain","rained"], 1, "Look! — hozir bo'layotgan ish."),
+    Q("They ___ not sleeping.", ["is","am","are","do"], 2, "they + are."),
+    Q("run → ?", ["runing","running","runs","runned"], 1, "Undosh ikkilanadi."),
+    Q("make → ?", ["makeing","making","maked","makes"], 1, "e tushadi."),
+    Q("___ he working now?", ["Do","Does","Is","Are"], 2, "he + Is."),
+    Q("Which verb is NOT usually used in continuous?", ["eat","know","read","play"], 1, "know — stative fe'l."),
+    Q("We ___ English now.", ["learn","are learning","learns","is learning"], 1, "we + are learning."),
+    Q("Short answer: 'Is she sleeping?'", ["Yes, she is.","Yes, she does.","Yes, she sleeps.","Yes, she are."], 0, "Is she...? — Yes, she is.")
+  ]
+},
+{
+  id: "past-simple", title: "Past Simple", uz: "Oddiy o'tgan zamon", level: "A2", cat: "Zamonlar",
+  def: "Past Simple — o'tmishda tugagan ish-harakat uchun zamon.",
+  explain: "Vaqti aniq o'tmishda bo'lgan va tugagan ishlarni aytamiz: yesterday, last year, in 2020, ago. To'g'ri fe'llarga -ed qo'shiladi (visit → visited). Noto'g'ri fe'llarning 2-shakli (V2) yodlanadi (go → went). Inkor va so'roqda did yordamchi fe'li ishlatiladi, asosiy fe'l V1 holatiga qaytadi.",
+  formula: "Subject + V2 (V-ed)\nNeg: Subject + did not + V1\nQ: Did + subject + V1?",
+  uses: ["O'tmishda tugagan ish: I visited London last year.", "O'tmishdagi ketma-ket ishlar: I woke up, washed and left.", "O'tmishdagi odat: When I was a child, I played outside."],
+  forms: { aff: "I visited London last year.", neg: "I did not (didn't) visit Paris.", q: "Did you visit London?", short: "Yes, I did. / No, I didn't." },
+  examples: [["I visited London last year.", "Men o'tgan yili Londonga bordim."],["She watched a film yesterday.", "U kecha film ko'rdi."],["We went to the park.", "Biz bog'ga bordik."],["He did not call me.", "U menga qo'ng'iroq qilmadi."],["Did you finish your homework?", "Uy vazifangizni tugatdingizmi?"],["They bought a new car in 2022.", "Ular 2022-yilda yangi mashina sotib olishdi."],["I met her two days ago.", "Men uni ikki kun oldin uchratdim."]],
+  mistakes: [["Did you went?", "Did you go?", "did dan keyin V1."],["I didn't saw him.", "I didn't see him.", "didn't dan keyin V1."],["She goed home.", "She went home.", "go — noto'g'ri fe'l."]],
+  signals: "yesterday, last week, ago, in 2019, when I was a child",
+  exercises: [EX("I ___ (visit) my aunt yesterday.", "visited", "visit + ed."),EX("She ___ (go) to school by bus.", "went", "go → went."),EX("They ___ (not/see) the film.", "didn't see", "did not + V1."),EX("___ you ___ (eat) breakfast? (Did/eat)", "Did eat", "Did + V1."),EX("He ___ (buy) a book last week.", "bought", "buy → bought.")],
+  quiz: [
+    Q("I ___ to Samarkand last summer.", ["go","went","gone","goes"], 1, "go → went."),
+    Q("She ___ TV yesterday.", ["watch","watches","watched","watching"], 2, "-ed."),
+    Q("Did you ___ him?", ["saw","see","seen","sees"], 1, "Did + V1."),
+    Q("They ___ not come to the party.", ["do","does","did","done"], 2, "did not."),
+    Q("study (past) →", ["studyed","studied","studys","studid"], 1, "y → ied."),
+    Q("Signal word:", ["now","ago","usually","tomorrow"], 1, "ago — o'tmish."),
+    Q("He ___ a new phone last week.", ["buy","buys","bought","buyed"], 2, "buy → bought."),
+    Q("Correct negative:", ["I didn't went.","I not went.","I didn't go.","I don't went."], 2, "didn't + V1."),
+    Q("write (V2) =", ["writed","wrote","written","writes"], 1, "write – wrote – written."),
+    Q("___ she call you yesterday?", ["Does","Did","Do","Was"], 1, "yesterday → Did.")
+  ]
+},
+{
+  id: "present-perfect", title: "Present Perfect", uz: "Hozirgi tugallangan zamon", level: "A2", cat: "Zamonlar",
+  def: "Present Perfect — o'tmishda boshlangan, lekin hozirgi payt bilan bog'liq ish (natijasi hozir ko'rinadigan yoki hozirgacha davom etayotgan).",
+  explain: "Vaqti aniq aytilmagan, lekin natijasi muhim bo'lgan ishlarni aytamiz: 'Men uy vazifamni tugatdim (endi bo'sh)'. have/has + V3. Aniq o'tgan vaqt (yesterday, in 2010) bilan ishlatilmaydi — u yerda Past Simple kerak. Signal so'zlar: already, yet, just, ever, never, since, for.",
+  formula: "Subject + have/has + V3",
+  uses: ["Natijasi hozir ko'rinadigan ish: I have lost my keys.", "Hayotiy tajriba: Have you ever been to Paris?", "Hozirgacha davom etayotgan holat: I have lived here for 5 years."],
+  forms: { aff: "I have finished my homework.", neg: "She has not (hasn't) finished.", q: "Have you finished?", short: "Yes, I have. / No, I haven't." },
+  examples: [["I have finished my homework.", "Men uy vazifamni tugatdim."],["She has visited Paris twice.", "U Parijga ikki marta borgan."],["Have you ever eaten sushi?", "Siz hech sushi yeganmisiz?"],["They have lived here since 2018.", "Ular 2018-yildan beri shu yerda yashaydi."],["He has just left.", "U hozirgina ketdi."],["We haven't seen this film yet.", "Biz bu filmni hali ko'rmadik."],["I have known him for ten years.", "Men uni o'n yildan beri bilaman."]],
+  mistakes: [["I have seen him yesterday.", "I saw him yesterday.", "yesterday bilan Past Simple."],["She have finished.", "She has finished.", "she + has."],["I have went there.", "I have gone there.", "V3 kerak: gone."]],
+  signals: "already, yet, just, ever, never, since, for, recently",
+  exercises: [EX("I ___ (finish) my work.", "have finished", "have + V3."),EX("She ___ (not/see) this film.", "hasn't seen", "she + hasn't + V3."),EX("___ you ever ___ (be) to Paris? (Have/been)", "Have been", "Have + V3."),EX("They ___ (live) here since 2020.", "have lived", "since bilan Present Perfect."),EX("He ___ (just/leave).", "has just left", "just have/has va V3 orasida.")],
+  quiz: [
+    Q("I ___ my keys.", ["lose","have lost","lost has","am lost"], 1, "have + V3."),
+    Q("She ___ already eaten.", ["have","has","is","do"], 1, "she + has."),
+    Q("Have you ___ to London?", ["go","went","been","being"], 2, "V3 of be = been."),
+    Q("We ___ lived here for ten years.", ["has","have","are","did"], 1, "we + have."),
+    Q("Which is correct?", ["I have seen him yesterday.","I saw him yesterday.","I have saw him yesterday.","I see him yesterday."], 1, "yesterday → Past Simple."),
+    Q("He hasn't finished ___.", ["yet","ago","yesterday","last week"], 0, "yet — inkor gaplarda."),
+    Q("V3 of 'write':", ["wrote","writed","written","writes"], 2, "write–wrote–written."),
+    Q("They ___ never visited Italy.", ["have","has","did","are"], 0, "they + have."),
+    Q("I have lived here ___ 2015.", ["for","since","ago","during"], 1, "since + nuqta, for + davr."),
+    Q("Short answer: 'Has she called?'", ["Yes, she has.","Yes, she have.","Yes, she did.","Yes, she is."], 0, "Has she...? — Yes, she has.")
+  ]
+},
+{
+  id: "future-simple", title: "Future: will and be going to", uz: "Kelasi zamon", level: "A2", cat: "Zamonlar",
+  def: "Kelajak haqida gapirishning ikki asosiy usuli: will + V1 va am/is/are going to + V1.",
+  explain: "Will — hozir qabul qilingan qaror, taxmin, va'da, taklif uchun: 'I'll help you'. Be going to — oldindan rejalashtirilgan ish yoki hozirgi belgilarga asoslangan taxmin uchun: 'I'm going to study medicine', 'Look at the clouds! It is going to rain'. Will'dan keyin fe'l har doim V1.",
+  formula: "Subject + will + V1\nSubject + am/is/are + going to + V1",
+  uses: ["will: spontan qaror — The phone is ringing. I'll answer it.", "will: va'da — I will call you.", "going to: reja — I'm going to buy a car.", "going to: belgi — He is going to fall!"],
+  forms: { aff: "I will help you.", neg: "I will not (won't) help you.", q: "Will you help me?", short: "Yes, I will. / No, I won't." },
+  examples: [["I will help you.", "Men sizga yordam beraman."],["She will not come tomorrow.", "U ertaga kelmaydi."],["Will it rain tomorrow?", "Ertaga yomg'ir yog'adimi?"],["I am going to study medicine.", "Men tibbiyot o'rganmoqchiman."],["They are going to travel in July.", "Ular iyulda sayohat qilishmoqchi."],["Look at the sky! It is going to rain.", "Osmonga qarang! Yomg'ir yog'adi."],["I think he will pass the exam.", "Menimcha, u imtihondan o'tadi."]],
+  mistakes: [["I will to go.", "I will go.", "will dan keyin to kerak emas."],["She will goes.", "She will go.", "will dan keyin V1."],["If it will rain, I will stay.", "If it rains, I will stay.", "if gapida will ishlatilmaydi."]],
+  signals: "tomorrow, next week, soon, in 2030, tonight, I think",
+  exercises: [EX("I ___ (call) you tomorrow. (will)", "will call", "will + V1."),EX("She ___ (not/come) to the party. (won't)", "won't come", "won't + V1."),EX("I ___ (visit) Paris next year. (going to)", "am going to visit", "reja — going to."),EX("___ you ___ (help) me? (Will)", "Will help", "Will + V1."),EX("Look! He ___ (fall). (going to)", "is going to fall", "belgi — going to.")],
+  quiz: [
+    Q("I ___ you tomorrow.", ["call","will call","called","am call"], 1, "will + V1."),
+    Q("She ___ not come.", ["will","is","do","has"], 0, "will not."),
+    Q("Look at the clouds! It ___ rain.", ["will","is going to","goes to","did"], 1, "Belgi — going to."),
+    Q("We ___ going to buy a house.", ["is","am","are","will"], 2, "we + are."),
+    Q("won't = ?", ["will not","would not","was not","will no"], 0, "won't = will not."),
+    Q("Correct sentence:", ["She will goes.","She will go.","She will to go.","She wills go."], 1, "will + V1."),
+    Q("I'm hungry. I ___ make a sandwich. (spontan)", ["will","am going to make","made","make"], 0, "Hozir qaror — will."),
+    Q("___ you help me?", ["Will","Are","Do","Did"], 0, "Will you...?"),
+    Q("They ___ going to move next month.", ["is","are","will","do"], 1, "they + are going to."),
+    Q("If it ___ tomorrow, we'll stay home.", ["will rain","rains","rained","raining"], 1, "if gapida Present Simple.")
+  ]
+},
+{
+  id: "modals-basic", title: "Modal verbs: can, must, should", uz: "Modal fe'llar", level: "A2", cat: "Modal fe'llar",
+  def: "Modal fe'llar (can, must, should...) — qobiliyat, majburiyat, maslahat, ruxsat va ehtimolni bildiradi.",
+  explain: "Modal fe'llardan keyin har doim V1 keladi (to'siz). Ularga -s qo'shilmaydi: he can, she must. Inkor uchun not qo'shiladi, so'roqda gap boshiga chiqadi. Can — qila olish/ruxsat; must — kuchli majburiyat; should — maslahat; have to — tashqi majburiyat; mustn't — taqiq.",
+  formula: "Subject + modal + V1",
+  uses: ["can — qobiliyat: I can swim.", "could — o'tmishdagi qobiliyat, muloyim so'rov.", "must — majburiyat: You must wear a seatbelt.", "mustn't — taqiq: You mustn't smoke here.", "should — maslahat: You should sleep more.", "have to — tashqi majburiyat: I have to wake up early."],
+  forms: { aff: "She can swim.", neg: "She cannot (can't) swim.", q: "Can she swim?", short: "Yes, she can. / No, she can't." },
+  examples: [["I can speak English.", "Men ingliz tilida gapira olaman."],["You must do your homework.", "Siz uy vazifangizni qilishingiz shart."],["You should drink more water.", "Siz ko'proq suv ichishingiz kerak (maslahat)."],["You mustn't park here.", "Bu yerga mashina qo'yish mumkin emas."],["Can I open the window?", "Derazani ochsam bo'ladimi?"],["He has to work on Saturday.", "U shanba kuni ishlashi kerak."],["Could you help me, please?", "Menga yordam bera olasizmi?"]],
+  mistakes: [["She cans swim.", "She can swim.", "can -s olmaydi."],["I must to go.", "I must go.", "must dan keyin to yo'q."],["Does she can swim?", "Can she swim?", "Modal fe'lda do/does kerak emas."]],
+  exercises: [EX("I ___ swim. (can/cans)", "can", "can -s olmaydi."),EX("You ___ smoke here. (taqiq) (mustn't/don't have to)", "mustn't", "Taqiq — mustn't."),EX("You look tired. You ___ rest. (should/must)", "should", "Maslahat — should."),EX("___ I borrow your pen? (Can/Do)", "Can", "Ruxsat so'rash — Can I...?"),EX("She ___ go now. (can't/doesn't can)", "can't", "can't + V1.")],
+  quiz: [
+    Q("She ___ speak three languages.", ["can","cans","is can","does can"], 0, "can -s olmaydi."),
+    Q("You ___ wear a helmet. (majburiyat)", ["must","can","may","would"], 0, "must — majburiyat."),
+    Q("You ___ eat so much sugar. (maslahat, inkor)", ["shouldn't","mustn't to","don't should","not should"], 0, "shouldn't."),
+    Q("___ you play the guitar?", ["Can","Do","Are","Does"], 0, "Can you...?"),
+    Q("He ___ to work tomorrow.", ["must","has to","can","should to"], 1, "has to + V1."),
+    Q("You ___ park here. (taqiq)", ["mustn't","don't must","can","should"], 0, "mustn't — taqiq."),
+    Q("Modal'dan keyin fe'l:", ["V1","V-ing","V3","to + V1"], 0, "Modal + V1."),
+    Q("I ___ ride a bike when I was five. (o'tmish)", ["can","could","must","should"], 1, "could — o'tmishdagi qobiliyat."),
+    Q("You look sick. You ___ see a doctor.", ["should","can't","mustn't","would"], 0, "Maslahat — should."),
+    Q("Which is correct?", ["She can to dance.","She can dance.","She cans dance.","She can dances."], 1, "can + V1.")
+  ]
+},
+{
+  id: "comparatives", title: "Comparatives and superlatives", uz: "Solishtirma va orttirma daraja", level: "A2", cat: "Sifatlar",
+  def: "Comparative — ikki narsani solishtirish (taller). Superlative — eng yuqori daraja (the tallest).",
+  explain: "Qisqa sifatlar (1 bo'g'in): -er / -est (tall → taller → the tallest). 2 va undan ortiq bo'g'inli sifatlar: more / the most (beautiful → more beautiful → the most beautiful). -y bilan tugasa: happy → happier → the happiest. Tartibsiz: good → better → the best, bad → worse → the worst. Solishtirishda than ishlatiladi.",
+  formula: "adj + er + than | more + adj + than | the + adj + est | the most + adj",
+  uses: ["Ikki narsani solishtirish: Ali is taller than Bob.", "Guruhdagi eng yuqori daraja: She is the tallest in the class."],
+  forms: { aff: "Ali is taller than Bob.", neg: "Bob is not as tall as Ali.", q: "Is Ali taller than Bob?", short: "Yes, he is." },
+  examples: [["Ali is taller than Bob.", "Ali Bobdan balandroq."],["She is the tallest student in the class.", "U sinfdagi eng baland o'quvchi."],["This book is more interesting than that one.", "Bu kitob u kitobdan qiziqroq."],["Tashkent is bigger than Samarkand.", "Toshkent Samarqanddan kattaroq."],["This is the best day of my life.", "Bu hayotimdagi eng yaxshi kun."],["Today is worse than yesterday.", "Bugun kechagidan yomonroq."],["He is the most famous singer here.", "U bu yerdagi eng mashhur qo'shiqchi."]],
+  mistakes: [["more taller", "taller", "-er va more birga ishlatilmaydi."],["He is tall than me.", "He is taller than me.", "-er kerak."],["She is the more beautiful girl.", "She is the most beautiful girl.", "Eng yuqori daraja — the most."]],
+  exercises: [EX("big → ___ (comparative)", "bigger", "Undosh ikkilanadi."),EX("happy → ___ (superlative)", "the happiest", "y → iest."),EX("interesting → ___ (comparative)", "more interesting", "Uzun sifat — more."),EX("good → ___ (superlative)", "the best", "Tartibsiz."),EX("This car is ___ than that one. (fast)", "faster", "fast + er.")],
+  quiz: [
+    Q("Ali is ___ than Bob.", ["tall","taller","tallest","more tall"], 1, "Ikki narsa — -er."),
+    Q("She is the ___ student.", ["smarter","smartest","most smart","smart"], 1, "the + -est."),
+    Q("This book is ___ than that one.", ["interesting","more interesting","most interesting","interestinger"], 1, "Uzun sifat — more."),
+    Q("good → better → ?", ["goodest","the best","the most good","the better"], 1, "Tartibsiz."),
+    Q("bad → worse → ?", ["the baddest","the worst","the most bad","the worse"], 1, "Tartibsiz."),
+    Q("happy → ?", ["happyer","happier","more happy","happiest"], 1, "y → ier."),
+    Q("Which is correct?", ["more taller","taller","more tall","tallest than"], 1, "taller."),
+    Q("He runs ___ than me. (fast)", ["fast","faster","fastest","more fast"], 1, "fast + er."),
+    Q("Everest is ___ mountain in the world.", ["higher","the highest","the most high","highest"], 1, "the + -est."),
+    Q("big → ?", ["biger","bigger","more big","bigest"], 1, "Undosh ikkilanadi.")
+  ]
+}
+];
+
+</script>
+<script>
+// Vocabulary: [word, uzbek, partOfSpeech, exampleEn, exampleUz]
+const W = (w, uz, pos, en, eu) => ({ w, uz, pos, en, eu });
+
+window.VOCAB = [
+{ id: "greetings", title: "Greetings & introductions", uz: "Salomlashish", level: "A1", words: [
+  W("hello","salom","interj.","Hello! How are you?","Salom! Ishlaringiz qalay?"),
+  W("goodbye","xayr","interj.","Goodbye, see you tomorrow.","Xayr, ertaga ko'rishamiz."),
+  W("please","iltimos","adv.","Please sit down.","Iltimos, o'tiring."),
+  W("thank you","rahmat","phrase","Thank you for your help.","Yordamingiz uchun rahmat."),
+  W("sorry","kechirasiz","adj.","I'm sorry I'm late.","Kechikkanim uchun kechirasiz."),
+  W("welcome","xush kelibsiz","adj.","Welcome to our school!","Maktabimizga xush kelibsiz!"),
+  W("meet","uchrashmoq, tanishmoq","verb","Nice to meet you.","Tanishganimdan xursandman."),
+  W("name","ism","noun","My name is Ali.","Mening ismim Ali."),
+  W("friend","do'st","noun","He is my best friend.","U mening eng yaxshi do'stim."),
+  W("morning","ertalab","noun","Good morning!","Xayrli tong!"),
+  W("evening","kechqurun","noun","Good evening, madam.","Xayrli kech, xonim."),
+  W("introduce","tanishtirmoq","verb","Let me introduce my sister.","Opamni tanishtirib qo'yay.") ]},
+{ id: "family", title: "Family and relatives", uz: "Oila", level: "A1", words: [
+  W("mother","ona","noun","My mother cooks well.","Onam yaxshi ovqat pishiradi."),
+  W("father","ota","noun","My father works in a bank.","Otam bankda ishlaydi."),
+  W("brother","aka/uka","noun","I have one brother.","Mening bitta akam/ukam bor."),
+  W("sister","opa/singil","noun","My sister is a doctor.","Opam/singlim shifokor."),
+  W("grandmother","buvi","noun","My grandmother tells stories.","Buvim hikoyalar aytib beradi."),
+  W("grandfather","bobo","noun","My grandfather is 70.","Bobom 70 yoshda."),
+  W("uncle","amaki/tog'a","noun","My uncle lives in Moscow.","Amakim Moskvada yashaydi."),
+  W("aunt","xola/amma","noun","My aunt visits us often.","Xolam bizni tez-tez ko'rgani keladi."),
+  W("cousin","amakivachcha","noun","My cousin is my age.","Amakivachcham men bilan tengdosh."),
+  W("husband","er","noun","Her husband is an engineer.","Uning eri muhandis."),
+  W("wife","xotin","noun","His wife is a teacher.","Uning xotini o'qituvchi."),
+  W("parents","ota-ona","noun","My parents are kind.","Ota-onam mehribon.") ]},
+{ id: "food", title: "Food and drinks", uz: "Ovqat va ichimliklar", level: "A1", words: [
+  W("bread","non","noun","I eat bread every day.","Men har kuni non yeyman."),
+  W("rice","guruch","noun","We cook rice for dinner.","Biz kechki ovqatga guruch pishiramiz."),
+  W("meat","go'sht","noun","He doesn't eat meat.","U go'sht yemaydi."),
+  W("fish","baliq","noun","Fish is healthy.","Baliq foydali."),
+  W("apple","olma","noun","She eats an apple.","U olma yeydi."),
+  W("vegetable","sabzavot","noun","Eat more vegetables.","Ko'proq sabzavot yeng."),
+  W("water","suv","noun","I drink water.","Men suv ichaman."),
+  W("tea","choy","noun","Would you like some tea?","Choy xohlaysizmi?"),
+  W("milk","sut","noun","Milk is good for kids.","Sut bolalar uchun foydali."),
+  W("breakfast","nonushta","noun","I have breakfast at 7.","Men soat 7 da nonushta qilaman."),
+  W("lunch","tushlik","noun","We have lunch at school.","Biz maktabda tushlik qilamiz."),
+  W("dinner","kechki ovqat","noun","Dinner is ready.","Kechki ovqat tayyor.") ]},
+{ id: "routine", title: "Daily routine", uz: "Kundalik tartib", level: "A1", words: [
+  W("wake up","uyg'onmoq","phr. verb","I wake up at six.","Men oltida uyg'onaman."),
+  W("get up","o'rnidan turmoq","phr. verb","He gets up early.","U erta turadi."),
+  W("brush","tozalamoq (tish)","verb","I brush my teeth.","Men tishlarimni yuvaman."),
+  W("wash","yuvmoq","verb","She washes her face.","U yuzini yuvadi."),
+  W("go to work","ishga bormoq","phrase","He goes to work by bus.","U ishga avtobusda boradi."),
+  W("study","o'qimoq, o'rganmoq","verb","I study English.","Men ingliz tilini o'rganaman."),
+  W("come back","qaytib kelmoq","phr. verb","I come back at five.","Men beshda qaytaman."),
+  W("cook","ovqat pishirmoq","verb","Mom cooks dinner.","Onam kechki ovqat pishiradi."),
+  W("relax","dam olmoq","verb","I relax after work.","Men ishdan keyin dam olaman."),
+  W("go to bed","uxlagani yotmoq","phrase","I go to bed at 11.","Men 11 da yotaman."),
+  W("usually","odatda","adv.","I usually walk to school.","Men odatda maktabga piyoda boraman."),
+  W("always","doim","adv.","She always smiles.","U doim tabassum qiladi.") ]},
+{ id: "travel", title: "Travel and holidays", uz: "Sayohat", level: "A2", words: [
+  W("passport","pasport","noun","Show your passport, please.","Pasportingizni ko'rsating."),
+  W("ticket","chipta","noun","I bought a ticket online.","Men onlayn chipta oldim."),
+  W("luggage","yuk, bagaj","noun","My luggage is heavy.","Yukim og'ir."),
+  W("flight","reys","noun","The flight is delayed.","Reys kechikmoqda."),
+  W("airport","aeroport","noun","We arrived at the airport.","Biz aeroportga yetib keldik."),
+  W("hotel","mehmonxona","noun","The hotel is near the beach.","Mehmonxona plyajga yaqin."),
+  W("reservation","bron","noun","I have a reservation.","Menda bron bor."),
+  W("tourist","sayyoh","noun","Many tourists visit Samarkand.","Ko'p sayyohlar Samarqandga keladi."),
+  W("map","xarita","noun","Do you have a map?","Xaritangiz bormi?"),
+  W("journey","safar","noun","It was a long journey.","Bu uzoq safar edi."),
+  W("book","bron qilmoq","verb","I booked a room.","Men xona bron qildim."),
+  W("visit","tashrif buyurmoq","verb","We will visit Khiva.","Biz Xivaga boramiz.") ]},
+{ id: "school", title: "School and education", uz: "Maktab va ta'lim", level: "A2", words: [
+  W("teacher","o'qituvchi","noun","Our teacher is kind.","O'qituvchimiz mehribon."),
+  W("student","talaba, o'quvchi","noun","She is a good student.","U yaxshi o'quvchi."),
+  W("lesson","dars","noun","The lesson starts at 8.","Dars 8 da boshlanadi."),
+  W("homework","uy vazifasi","noun","I do my homework after school.","Men maktabdan keyin uy vazifamni qilaman."),
+  W("exam","imtihon","noun","I have an exam tomorrow.","Ertaga imtihonim bor."),
+  W("subject","fan","noun","Math is my favourite subject.","Matematika mening sevimli fanim."),
+  W("learn","o'rganmoq","verb","I learn ten words a day.","Men kuniga o'nta so'z o'rganaman."),
+  W("understand","tushunmoq","verb","I don't understand this rule.","Men bu qoidani tushunmayapman."),
+  W("mistake","xato","noun","Everyone makes mistakes.","Hamma xato qiladi."),
+  W("pass","o'tmoq (imtihon)","verb","She passed the exam.","U imtihondan o'tdi."),
+  W("university","universitet","noun","He studies at university.","U universitetda o'qiydi."),
+  W("library","kutubxona","noun","I read in the library.","Men kutubxonada o'qiyman.") ]},
+{ id: "health", title: "Health and illness", uz: "Salomatlik", level: "A2", words: [
+  W("doctor","shifokor","noun","I need to see a doctor.","Menga shifokorga ko'rinish kerak."),
+  W("headache","bosh og'rig'i","noun","I have a headache.","Boshim og'riyapti."),
+  W("fever","isitma","noun","He has a fever.","Uning isitmasi bor."),
+  W("cough","yo'tal","noun","She has a bad cough.","Uning qattiq yo'tali bor."),
+  W("medicine","dori","noun","Take this medicine twice a day.","Bu dorini kuniga ikki marta iching."),
+  W("pain","og'riq","noun","I feel pain in my back.","Belimda og'riq sezyapman."),
+  W("healthy","sog'lom","adj.","Fruit is healthy.","Meva sog'lom."),
+  W("sick","kasal","adj.","She is sick today.","U bugun kasal."),
+  W("hospital","kasalxona","noun","He is in the hospital.","U kasalxonada."),
+  W("exercise","mashq qilmoq","verb","I exercise every morning.","Men har ertalab mashq qilaman."),
+  W("rest","dam olmoq","verb","You should rest.","Siz dam olishingiz kerak."),
+  W("recover","tuzalmoq","verb","He is recovering well.","U yaxshi tuzalyapti.") ]},
+{ id: "technology", title: "Technology", uz: "Texnologiya", level: "B1", words: [
+  W("computer","kompyuter","noun","I work on a computer.","Men kompyuterda ishlayman."),
+  W("internet","internet","noun","The internet is fast here.","Bu yerda internet tez."),
+  W("download","yuklab olmoq","verb","I downloaded an app.","Men ilova yuklab oldim."),
+  W("password","parol","noun","Never share your password.","Parolingizni hech kimga bermang."),
+  W("screen","ekran","noun","The screen is broken.","Ekran singan."),
+  W("device","qurilma","noun","This device is very useful.","Bu qurilma juda foydali."),
+  W("software","dasturiy ta'minot","noun","Update your software.","Dasturingizni yangilang."),
+  W("website","veb-sayt","noun","I visited this website.","Men bu saytga kirdim."),
+  W("battery","batareya","noun","My battery is low.","Batareyam tugab qoldi."),
+  W("charge","zaryadlamoq","verb","I need to charge my phone.","Telefonimni zaryadlashim kerak."),
+  W("online","onlayn","adj.","She studies online.","U onlayn o'qiydi."),
+  W("technology","texnologiya","noun","Technology changes our lives.","Texnologiya hayotimizni o'zgartiradi.") ]},
+{ id: "work", title: "Work and business", uz: "Ish va biznes", level: "B1", words: [
+  W("job","ish, kasb","noun","He is looking for a job.","U ish qidiryapti."),
+  W("salary","maosh","noun","Her salary is good.","Uning maoshi yaxshi."),
+  W("manager","menejer","noun","The manager is in a meeting.","Menejer yig'ilishda."),
+  W("colleague","hamkasb","noun","My colleagues are friendly.","Hamkasblarim samimiy."),
+  W("interview","suhbat","noun","I have a job interview.","Menda ishga suhbat bor."),
+  W("experience","tajriba","noun","She has five years of experience.","Uning besh yillik tajribasi bor."),
+  W("deadline","muddat","noun","The deadline is Friday.","Muddat — juma."),
+  W("meeting","yig'ilish","noun","We have a meeting at ten.","Soat o'nda yig'ilishimiz bor."),
+  W("hire","ishga olmoq","verb","They hired a new designer.","Ular yangi dizayner olishdi."),
+  W("customer","mijoz","noun","The customer is always right.","Mijoz doim haq."),
+  W("profit","foyda","noun","The company made a profit.","Kompaniya foyda ko'rdi."),
+  W("career","karyera","noun","She wants a successful career.","U muvaffaqiyatli karyera xohlaydi.") ]},
+{ id: "ielts-academic", title: "IELTS / Academic vocabulary", uz: "IELTS akademik lug'at", level: "B2", words: [
+  W("significant","sezilarli, muhim","adj.","There was a significant increase.","Sezilarli o'sish bo'ldi."),
+  W("approach","yondashuv","noun","We need a new approach.","Bizga yangi yondashuv kerak."),
+  W("issue","muammo, masala","noun","Pollution is a serious issue.","Ifloslanish jiddiy muammo."),
+  W("impact","ta'sir","noun","Technology has a big impact on society.","Texnologiyaning jamiyatga ta'siri katta."),
+  W("benefit","foyda","noun","Exercise has many benefits.","Mashqning ko'p foydasi bor."),
+  W("require","talab qilmoq","verb","This job requires experience.","Bu ish tajriba talab qiladi."),
+  W("develop","rivojlantirmoq","verb","Countries develop their economies.","Davlatlar iqtisodini rivojlantiradi."),
+  W("trend","tendensiya","noun","There is a growing trend.","O'sib borayotgan tendensiya bor."),
+  W("evidence","dalil","noun","There is no evidence.","Hech qanday dalil yo'q."),
+  W("ensure","ta'minlamoq","verb","We must ensure safety.","Biz xavfsizlikni ta'minlashimiz kerak."),
+  W("contribute","hissa qo'shmoq","verb","Everyone can contribute.","Hamma hissa qo'sha oladi."),
+  W("consequence","oqibat","noun","Every action has consequences.","Har bir harakatning oqibati bor.") ]}
+];
+
+// Irregular verbs: V1|V2|V3|uzbek
+const IRR_RAW = "be|was/were|been|bo'lmoq;become|became|become|bo'lmoq (aylanmoq);begin|began|begun|boshlamoq;break|broke|broken|sindirmoq;bring|brought|brought|olib kelmoq;build|built|built|qurmoq;buy|bought|bought|sotib olmoq;catch|caught|caught|ushlamoq;choose|chose|chosen|tanlamoq;come|came|come|kelmoq;cost|cost|cost|turmoq (narx);cut|cut|cut|kesmoq;do|did|done|qilmoq;draw|drew|drawn|chizmoq;drink|drank|drunk|ichmoq;drive|drove|driven|haydamoq;eat|ate|eaten|yemoq;fall|fell|fallen|yiqilmoq;feel|felt|felt|his qilmoq;fight|fought|fought|jang qilmoq;find|found|found|topmoq;fly|flew|flown|uchmoq;forget|forgot|forgotten|unutmoq;forgive|forgave|forgiven|kechirmoq;freeze|froze|frozen|muzlamoq;get|got|got/gotten|olmoq;give|gave|given|bermoq;go|went|gone|bormoq;grow|grew|grown|o'smoq;hang|hung|hung|osmoq;have|had|had|ega bo'lmoq;hear|heard|heard|eshitmoq;hide|hid|hidden|yashirmoq;hit|hit|hit|urmoq;hold|held|held|ushlab turmoq;hurt|hurt|hurt|og'ritmoq;keep|kept|kept|saqlamoq;know|knew|known|bilmoq;lay|laid|laid|qo'ymoq;lead|led|led|boshlamoq;leave|left|left|tark etmoq;lend|lent|lent|qarz bermoq;let|let|let|ruxsat bermoq;lie|lay|lain|yotmoq;light|lit|lit|yoqmoq;lose|lost|lost|yo'qotmoq;make|made|made|yasamoq;mean|meant|meant|anglatmoq;meet|met|met|uchrashmoq;pay|paid|paid|to'lamoq;put|put|put|qo'ymoq;read|read|read|o'qimoq;ride|rode|ridden|minmoq;ring|rang|rung|jiringlamoq;rise|rose|risen|ko'tarilmoq;run|ran|run|yugurmoq;say|said|said|demoq;see|saw|seen|ko'rmoq;sell|sold|sold|sotmoq;send|sent|sent|yubormoq;set|set|set|o'rnatmoq;shake|shook|shaken|silkitmoq;shine|shone|shone|porlamoq;shoot|shot|shot|otmoq;show|showed|shown|ko'rsatmoq;shut|shut|shut|yopmoq;sing|sang|sung|kuylamoq;sink|sank|sunk|cho'kmoq;sit|sat|sat|o'tirmoq;sleep|slept|slept|uxlamoq;speak|spoke|spoken|gapirmoq;spend|spent|spent|sarflamoq;stand|stood|stood|turmoq;steal|stole|stolen|o'g'irlamoq;swim|swam|swum|suzmoq;take|took|taken|olmoq;teach|taught|taught|o'rgatmoq;tear|tore|torn|yirtmoq;tell|told|told|aytmoq;think|thought|thought|o'ylamoq;throw|threw|thrown|otmoq (uloqtirmoq);understand|understood|understood|tushunmoq;wake|woke|woken|uyg'onmoq;wear|wore|worn|kiymoq;win|won|won|yutmoq;write|wrote|written|yozmoq;spell|spelt|spelt|harflab aytmoq;lean|leant|leant|suyanmoq;burn|burnt|burnt|yonmoq;deal|dealt|dealt|shug'ullanmoq;dig|dug|dug|qazimoq;feed|fed|fed|boqmoq;bend|bent|bent|egmoq;bite|bit|bitten|tishlamoq;blow|blew|blown|puflamoq;swear|swore|sworn|qasam ichmoq;seek|sought|sought|izlamoq;sweep|swept|swept|supurmoq;stick|stuck|stuck|yopishmoq;forbid|forbade|forbidden|taqiqlamoq;overcome|overcame|overcome|yengmoq";
+window.IRREGULAR = IRR_RAW.split(";").map(s => { const p = s.split("|"); return { v1: p[0], v2: p[1], v3: p[2], uz: p[3] }; });
+
+</script>
+<script>
+const QQ = (q, o, a, e) => ({ q, o, a, e });
+
+window.READING = [
+{ id: "r1", level: "A1", title: "My Day", text: "My name is Dilnoza. I am a student. I get up at 7 o'clock. I have breakfast with my family. Then I go to school by bus. I study English, Math and History. After school I do my homework. In the evening I read a book and go to bed at 10.",
+  uz: "Mening ismim Dilnoza. Men o'quvchiman. Men soat 7 da turaman. Oilam bilan nonushta qilaman. Keyin maktabga avtobusda boraman. Men ingliz tili, matematika va tarix o'rganaman. Maktabdan keyin uy vazifamni qilaman. Kechqurun kitob o'qiyman va 10 da uxlayman.",
+  words: ["get up — turmoq","breakfast — nonushta","homework — uy vazifasi"],
+  main: "Dilnoza tells about her daily routine.",
+  questions: [
+    QQ("How does Dilnoza go to school?", ["By bus","On foot","By car","By bike"], 0, "'I go to school by bus.'"),
+    QQ("She gets up at 7 o'clock. (True/False/Not Given)", ["True","False","Not Given"], 0, "Matnda aynan shunday yozilgan."),
+    QQ("She plays football after school. (True/False/Not Given)", ["True","False","Not Given"], 2, "Futbol haqida gap yo'q — Not Given."),
+    QQ("When does she go to bed?", ["At 8","At 9","At 10","At 11"], 2, "'go to bed at 10'.") ]},
+{ id: "r2", level: "A2", title: "A Weekend in Samarkand", text: "Last weekend my family visited Samarkand. We travelled by train, and the journey took about two hours. On Saturday we saw the Registan and walked through the old streets. The buildings were blue and gold, and they looked beautiful. We ate delicious plov at a small restaurant. On Sunday we bought some bread and sweets at the bazaar. Everyone was tired but very happy.",
+  uz: "O'tgan hafta oxirida oilam bilan Samarqandga bordik. Poyezdda bordik, yo'l taxminan ikki soat davom etdi. Shanba kuni Registonni ko'rdik va eski ko'chalarda yurdik. Binolar ko'k va oltin rangda edi, juda chiroyli ko'rinardi. Kichik restoranda mazali palov yedik. Yakshanba kuni bozorda non va shirinliklar sotib oldik. Hamma charchagan, lekin juda xursand edi.",
+  words: ["journey — safar","delicious — mazali","bazaar — bozor","tired — charchagan"],
+  main: "A family spends a weekend travelling in Samarkand.",
+  questions: [
+    QQ("How did they travel to Samarkand?", ["By bus","By train","By plane","By car"], 1, "'We travelled by train'."),
+    QQ("What did they do on Saturday?", ["Went to the bazaar","Saw the Registan","Stayed at the hotel","Visited relatives"], 1, "Shanba kuni Registonni ko'rishdi."),
+    QQ("They stayed in a hotel. (True/False/Not Given)", ["True","False","Not Given"], 2, "Mehmonxona haqida gap yo'q."),
+    QQ("The journey took two hours. (True/False/Not Given)", ["True","False","Not Given"], 0, "'about two hours'.") ]},
+{ id: "r3", level: "B1", title: "Why Sleep Matters", text: "Many people think that sleeping is a waste of time, but scientists say the opposite. During sleep the brain stores new information and repairs the body. Adults usually need between seven and nine hours every night. People who sleep too little often feel tired, find it difficult to concentrate and may get ill more easily. To sleep better, experts recommend going to bed at the same time every day and avoiding phones before bedtime.",
+  uz: "Ko'p odamlar uxlash vaqtni bekor sarflash deb o'ylaydi, lekin olimlar buning aksini aytadi. Uyqu paytida miya yangi ma'lumotlarni saqlaydi va tana tiklanadi. Kattalarga odatda har tunda yetti-to'qqiz soat uyqu kerak. Kam uxlaydigan odamlar ko'pincha charchoq his qiladi, diqqatini jamlashga qiynaladi va tezroq kasal bo'lishi mumkin. Yaxshiroq uxlash uchun mutaxassislar har kuni bir vaqtda yotishni va yotishdan oldin telefondan foydalanmaslikni maslahat beradi.",
+  words: ["waste — behuda sarflash","concentrate — diqqatni jamlamoq","recommend — tavsiya qilmoq","avoid — qochmoq"],
+  main: "Sleep is important for the brain and body, and good habits can improve it.",
+  questions: [
+    QQ("How many hours do adults usually need?", ["5–6","6–7","7–9","10–12"], 2, "'between seven and nine hours'."),
+    QQ("Scientists believe sleep is a waste of time. (True/False/Not Given)", ["True","False","Not Given"], 1, "Olimlar aksini aytadi — False."),
+    QQ("Coffee helps people sleep better. (True/False/Not Given)", ["True","False","Not Given"], 2, "Qahva haqida gap yo'q."),
+    QQ("What do experts recommend?", ["Sleeping in the day","Same bedtime every day","Using phone in bed","Sleeping less"], 1, "Har kuni bir vaqtda yotish.") ]}
+];
+
+window.LISTENING = [
+{ id: "l1", level: "A1", title: "Introducing yourself", text: "Hello! My name is Tom. I am twelve years old. I live in London with my mother, my father and my little sister. I like football and I play it every weekend.",
+  uz: "Salom! Mening ismim Tom. Men o'n ikki yoshdaman. Men Londonda onam, otam va kichik singlim bilan yashayman. Men futbolni yoqtiraman va uni har dam olish kuni o'ynayman.",
+  words: ["weekend — dam olish kunlari","little — kichkina"],
+  questions: [QQ("How old is Tom?", ["10","11","12","13"], 2, "'twelve years old'."), QQ("Where does he live?", ["Paris","London","New York","Tashkent"], 1, "'I live in London'."), QQ("Tom plays football every weekend. (True/False)", ["True","False"], 0, "'play it every weekend'.")] },
+{ id: "l2", level: "A2", title: "At a restaurant", text: "Waiter: Good evening. Are you ready to order? Customer: Yes, I would like a chicken salad and a glass of orange juice, please. Waiter: Anything else? Customer: No, thank you. How much is it? Waiter: It is nine dollars.",
+  uz: "Ofitsiant: Xayrli kech. Buyurtma berishga tayyormisiz? Mijoz: Ha, menga tovuqli salat va bir stakan apelsin sharbati bering. Ofitsiant: Yana nimadir? Mijoz: Yo'q, rahmat. Qancha bo'ladi? Ofitsiant: To'qqiz dollar.",
+  words: ["order — buyurtma bermoq","waiter — ofitsiant"],
+  questions: [QQ("What does the customer order to drink?", ["Tea","Water","Orange juice","Milk"], 2, "'a glass of orange juice'."), QQ("How much is the meal?", ["$7","$8","$9","$10"], 2, "'nine dollars'."), QQ("The customer orders dessert. (True/False)", ["True","False"], 1, "'No, thank you.'")] },
+{ id: "l3", level: "B1", title: "Weather forecast", text: "Good morning. Today will be cloudy in the north with some rain in the afternoon. In the south it will be sunny and warm, with temperatures up to twenty-five degrees. Tomorrow the weather will get colder and windy everywhere.",
+  uz: "Xayrli tong. Bugun shimolda bulutli bo'ladi, tushdan keyin yomg'ir yog'adi. Janubda esa quyoshli va iliq, harorat yigirma besh darajagacha bo'ladi. Ertaga hamma joyda sovuqroq va shamolli bo'ladi.",
+  words: ["forecast — ob-havo prognozi","temperature — harorat","cloudy — bulutli"],
+  questions: [QQ("What is the weather in the south today?", ["Rainy","Sunny and warm","Snowy","Foggy"], 1, "Janubda quyoshli va iliq."), QQ("How hot will it be in the south?", ["15","20","25","30"], 2, "'twenty-five degrees'."), QQ("Tomorrow will be warmer. (True/False)", ["True","False"], 1, "Ertaga sovuqroq bo'ladi.")] }
+];
+
+window.SPEAKING = [
+{ id: "s1", title: "Introducing yourself", questions: ["What is your name?","How old are you?","Where are you from?","What do you do?"], sample: "My name is Ali. I am 20 years old. I am from Tashkent. I am a student and I study English every day.", uz: "Mening ismim Ali. Men 20 yoshdaman. Men Toshkentdanman. Men talabaman va har kuni ingliz tilini o'rganaman.", phrases: ["My name is...","I am from...","Nice to meet you."], vocab: ["student","from","study"] },
+{ id: "s2", title: "My family", questions: ["How many people are in your family?","What does your father do?","Do you have brothers or sisters?","Who are you close to?"], sample: "There are five people in my family: my parents, my brother, my sister and me. My father is an engineer and my mother is a teacher. I am very close to my sister.", uz: "Oilamda besh kishi bor: ota-onam, akam, singlim va men. Otam muhandis, onam o'qituvchi. Men singlimga juda yaqinman.", phrases: ["There are... people in my family.","I am close to...","My father works as..."], vocab: ["parents","engineer","close"] },
+{ id: "s3", title: "My daily routine", questions: ["What time do you get up?","What do you do in the morning?","When do you do your homework?","What do you do in the evening?"], sample: "I get up at 6:30. I have breakfast and go to school. After school I do my homework and help my mother. In the evening I read a book.", uz: "Men 6:30 da turaman. Nonushta qilib maktabga boraman. Maktabdan keyin uy vazifamni qilaman va onamga yordam beraman. Kechqurun kitob o'qiyman.", phrases: ["I usually...","After that...","In the evening..."], vocab: ["breakfast","homework","usually"] },
+{ id: "s4", title: "My hobbies", questions: ["What do you like doing in your free time?","How often do you do it?","Who do you do it with?","Why do you like it?"], sample: "I like playing football in my free time. I play it twice a week with my friends. I like it because it is fun and keeps me healthy.", uz: "Bo'sh vaqtimda futbol o'ynashni yaxshi ko'raman. Do'stlarim bilan haftasiga ikki marta o'ynayman. Menga yoqadi, chunki u qiziqarli va meni sog'lom saqlaydi.", phrases: ["I like + V-ing","twice a week","because it is..."], vocab: ["free time","healthy","fun"] },
+{ id: "s5", title: "My future plans", questions: ["What do you want to do after school?","What job would you like?","Where do you want to live?","What are you going to do to reach your goal?"], sample: "After school I want to go to university. I would like to be a doctor. I am going to study hard and learn English.", uz: "Maktabdan keyin universitetga bormoqchiman. Shifokor bo'lishni xohlayman. Qattiq o'qimoqchiman va ingliz tilini o'rganmoqchiman.", phrases: ["I want to...","I would like to be...","I am going to..."], vocab: ["university","doctor","goal"] }
+];
+
+window.DIALOGUES = [
+{ id: "d1", title: "At the airport", lines: [["Officer","Good morning. May I see your passport, please?","Xayrli tong. Pasportingizni ko'rsam bo'ladimi?"],["Traveler","Here you are.","Marhamat."],["Officer","What is the purpose of your visit?","Tashrifingiz maqsadi nima?"],["Traveler","I am here on holiday for one week.","Men bir haftaga dam olgani keldim."],["Officer","Enjoy your stay.","Dam oling."]] },
+{ id: "d2", title: "At a shop", lines: [["Seller","Can I help you?","Yordam bera olamanmi?"],["Customer","Yes, how much is this T-shirt?","Ha, bu futbolka qancha turadi?"],["Seller","It is fifteen dollars.","O'n besh dollar."],["Customer","Do you have a bigger size?","Kattaroq razmeringiz bormi?"],["Seller","Yes, wait a moment, please.","Ha, bir lahza kuting."]] },
+{ id: "d3", title: "Asking for directions", lines: [["Tourist","Excuse me, where is the bank?","Kechirasiz, bank qayerda?"],["Local","Go straight and turn left at the corner.","To'g'ri yuring va burchakda chapga buriling."],["Tourist","Is it far?","Uzoqmi?"],["Local","No, it is five minutes on foot.","Yo'q, piyoda besh daqiqa."],["Tourist","Thank you very much!","Katta rahmat!"]] },
+{ id: "d4", title: "At the doctor", lines: [["Doctor","What seems to be the problem?","Muammo nima?"],["Patient","I have a headache and a fever.","Boshim og'riyapti va isitmam bor."],["Doctor","How long have you felt like this?","Qancha vaqtdan beri shunday?"],["Patient","Since yesterday.","Kechadan beri."],["Doctor","Take this medicine and rest.","Bu dorini iching va dam oling."]] }
+];
+
+window.WRITING = [
+{ id: "w1", level: "A1", title: "Describe yourself", prompt: "Write 5–6 sentences about yourself: name, age, city, family, hobby.", min: 25, tips: ["Use I am... / I live in... / I like...","Start each sentence with a capital letter and end with a full stop."] },
+{ id: "w2", level: "A2", title: "Email to a friend", prompt: "Write an email (40–60 words) to a friend. Invite him/her to your birthday party.", min: 40, tips: ["Greeting: Hi + name,","Say when and where the party is.","End with: See you soon!"] },
+{ id: "w3", level: "B1", title: "Opinion paragraph", prompt: "Do you think students should use phones at school? Write 80–100 words with reasons.", min: 80, tips: ["State your opinion: I think... / In my opinion...","Give two reasons: Firstly, ... Secondly, ...","Finish with a conclusion: In conclusion, ..."] },
+{ id: "w4", level: "IELTS", title: "IELTS Task 2: Opinion", prompt: "Some people think children should start learning foreign languages at primary school. To what extent do you agree or disagree? (Write at least 250 words)", min: 250, tips: ["Intro: paraphrase + your opinion","Body 1: first reason + example","Body 2: second reason + example","Conclusion: restate opinion"] }
+];
+
+window.IELTS = {
+  writing: [["Task Response","Savolga to'liq javob berish, fikrni asoslash va misollar keltirish."],["Coherence and Cohesion","Fikrlar ketma-ketligi, abzatslar va bog'lovchi so'zlar."],["Lexical Resource","Lug'at boyligi, aniqlik va so'zlarni to'g'ri ishlatish."],["Grammatical Range and Accuracy","Gap turlarining xilma-xilligi va grammatik to'g'rilik."]],
+  speaking: [["Fluency and Coherence","Ravon gapirish, to'xtamasdan fikrni bog'lash."],["Lexical Resource","Turli so'zlar, iboralar va sinonimlar."],["Grammatical Range and Accuracy","Murakkab gaplar va ularning to'g'riligi."],["Pronunciation","Talaffuz, urg'u va intonatsiya."]],
+  part1: ["Do you work or study?","What do you like about your hometown?","How often do you read books?","What do you usually do on weekends?","Do you like cooking? Why / why not?"],
+  part2: [{ card: "Describe a person who helped you.", points: ["Who the person is","How you met","What they did","How you felt about it"] },{ card: "Describe a place you would like to visit.", points: ["Where it is","How you know about it","What you would do there","Why you want to go"] }],
+  part3: ["Why do some people prefer to travel alone?","How has technology changed the way people communicate?","Do you think children should help at home? Why?"],
+  tips: ["Part 2 da 1 daqiqa tayyorlaning va qisqa reja yozing.","Savolga qisqa 'yes/no' bilan emas, sabab va misol bilan javob bering.","Bir xil so'zni takrorlamang: sinonimlardan foydalaning.","Vaqtni nazorat qiling: Task 1 uchun 20, Task 2 uchun 40 daqiqa."]
+};
+
+window.CHALLENGE30 = ["Introducing yourself","My daily routine","My family","Education","Technology","Travel","Weekly test","My best friend","My hometown","Favourite food","Hobbies","Favourite movie","Favourite book","My room","Weekly test","My weekend","Future plans","Dream job","Favourite season","My holiday","Weekly test","My country","Favourite sport","My childhood","My goals","Health","Environment","Weekly test","Culture and traditions","Final review"];
+
+window.SCENARIOS = ["Job Interview","Travel English","School English","Debate Practice","Roleplay: At a restaurant","Picture Description"];
+
+</script>
+<script>
+(function () {
+'use strict';
+/* ============ helpers ============ */
+const $ = (s, e = document) => e.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad = n => String(n).padStart(2, '0');
+const dstr = d => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const today = () => dstr(new Date());
+const dayAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return dstr(d); };
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const pick = (a, n) => shuffle(a).slice(0, n);
+const dayNum = () => Math.floor(Date.now() / 864e5);
+
+/* ============ state ============ */
+const DEF = { name: '', avatar: '🎓', level: 'A1', goal: 50, reason: '', topics: [], theme: 'light', lang: 'uz', notif: false, accent: 'en-US', aiUrl: '/api/chat', showTr: true,
+  streak: 0, lastDay: '', xp: 0, skills: { grammar: 0, vocab: 0, reading: 0, listening: 0, speaking: 0, writing: 0 },
+  daily: {}, done: {}, scores: {}, favLessons: [], favWords: [], quizzes: [], srs: {}, mistakes: [], speakSessions: [], badges: [], ch: {}, ch30: [], writings: [] };
+let S;
+function load() { let o = {}; try { o = JSON.parse(localStorage.getItem('em_state') || '{}') || {}; } catch (e) { o = {}; } S = Object.assign({}, JSON.parse(JSON.stringify(DEF)), o); S.skills = Object.assign({}, DEF.skills, o.skills || {}); }
+function save() { try { localStorage.setItem('em_state', JSON.stringify(S)); } catch (e) { toast('Saqlashning iloji bo\'lmadi (brauzer xotirasi to\'la yoki o\'chirilgan).'); } }
+load();
+const L = (uz, en) => S.lang === 'en' ? en : uz;
+const rec = (d = today()) => (S.daily[d] = S.daily[d] || { xp: 0, min: 0 });
+
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2600); }
+function confetti() { const c = $('#confetti'); const cols = ['#2563eb', '#7c3aed', '#f59e0b', '#16a34a', '#ec4899']; for (let i = 0; i < 46; i++) { const e = document.createElement('i'); e.style.left = Math.random() * 100 + '%'; e.style.background = cols[i % 5]; e.style.animationDelay = Math.random() * .6 + 's'; c.appendChild(e); } setTimeout(() => c.innerHTML = '', 3200); }
+function touch() { const t = today(); if (S.lastDay === t) return; S.streak = S.lastDay === dayAgo(1) ? S.streak + 1 : 1; S.lastDay = t; }
+function addXP(n, skill) {
+  touch(); const r = rec(); const before = r.xp; r.xp += n; S.xp += n; if (skill) S.skills[skill] = (S.skills[skill] || 0) + n;
+  if (before < S.goal && r.xp >= S.goal) { confetti(); toast(L('🎉 Kunlik maqsad bajarildi!', '🎉 Daily goal reached!')); if (S.notif && 'Notification' in window && Notification.permission === 'granted') { try { new Notification('English Master', { body: 'Daily goal reached! 🎉' }); } catch (e) {} } }
+  checkBadges(); save();
+}
+const BADGES = [
+  ['first', '🥇 First lesson', () => Object.keys(S.done).length >= 1], ['xp100', '⭐ 100 XP', () => S.xp >= 100], ['xp500', '🌟 500 XP', () => S.xp >= 500],
+  ['streak3', '🔥 3-day streak', () => S.streak >= 3], ['streak7', '🔥 7-day streak', () => S.streak >= 7], ['quiz10', '🧠 10 quizzes', () => S.quizzes.length >= 10],
+  ['words50', '📖 50 words', () => masteredCount() + Object.keys(S.srs).length >= 50], ['perfect', '💯 Perfect quiz', () => S.quizzes.some(q => q.pct === 100)]];
+function checkBadges() { BADGES.forEach(b => { if (!S.badges.includes(b[0]) && b[2]()) { S.badges.push(b[0]); toast('🏅 ' + b[1]); } }); }
+const masteredCount = () => Object.values(S.srs).filter(r => r.iv >= 7).length;
+
+/* ============ speech ============ */
+const hasTTS = 'speechSynthesis' in window;
+function say(text, rate) { if (!hasTTS) { toast(L('Bu brauzer ovoz chiqarishni qo\'llamaydi.', 'Text-to-speech is not supported in this browser.')); return; } speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = S.accent; u.rate = rate || .9; speechSynthesis.speak(u); }
+function sayQueue(lines) { if (!hasTTS) return say(''); speechSynthesis.cancel(); lines.forEach(t => { const u = new SpeechSynthesisUtterance(t); u.lang = S.accent; u.rate = .9; speechSynthesis.speak(u); }); }
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recog = null;
+function listen(onText, onEnd) {
+  if (!SR) { toast(L('Bu brauzerda ovozni matnga aylantirish yo\'q (Chrome/Edge/Safari tavsiya etiladi). Matn yozing.', 'Speech recognition is not available here. Please type instead.')); return false; }
+  if (recog) { try { recog.stop(); } catch (e) {} recog = null; if (onEnd) onEnd(); return false; }
+  recog = new SR(); recog.lang = S.accent; recog.interimResults = true; recog.continuous = false;
+  recog.onresult = e => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; onText(t); };
+  recog.onerror = e => { toast(L('Mikrofon xatosi: ', 'Mic error: ') + (e.error || '')); };
+  recog.onend = () => { recog = null; if (onEnd) onEnd(); };
+  try { recog.start(); toast(L('Tinglayapman… gapiring', 'Listening… speak now')); return true; } catch (e) { recog = null; return false; }
+}
+
+/* ============ data helpers ============ */
+const ALLW = []; VOCAB.forEach(t => t.words.forEach(w => ALLW.push(Object.assign({ topic: t.id, level: t.level }, w))));
+const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'IELTS'];
+function vocabQs(words, n) { const pool = ALLW; return pick(words, n).map(w => { const wrong = pick(pool.filter(x => x.uz !== w.uz), 3).map(x => x.uz); const opts = shuffle([w.uz].concat(wrong)); return { q: '"' + w.w + '" — ' + L('o\'zbekcha ma\'nosi?', 'meaning in Uzbek?'), o: opts, a: opts.indexOf(w.uz), e: w.en + ' — ' + w.eu }; }); }
+const allGrammarQs = () => GRAMMAR.flatMap(g => g.quiz);
+const norm = s => String(s).toLowerCase().replace(/[’`]/g, "'").replace(/[.,!?]/g, '').replace(/\bdo not\b/g, "don't").replace(/\bdoes not\b/g, "doesn't").replace(/\bdid not\b/g, "didn't").replace(/\bis not\b/g, "isn't").replace(/\bare not\b/g, "aren't").replace(/\bwill not\b/g, "won't").replace(/\bhas not\b/g, "hasn't").replace(/\bhave not\b/g, "haven't").replace(/\bcannot\b/g, "can't").replace(/\s+/g, ' ').trim();
+
+/* ============ view plumbing ============ */
+let timers = [];
+function clearTimers() { timers.forEach(clearInterval); timers = []; if (recog) { try { recog.stop(); } catch (e) {} recog = null; } }
+const view = html => { $('#view').innerHTML = html; window.scrollTo(0, 0); };
+const goBtn = (hash, label, cls = 'btn') => `<button class="${cls}" data-go="${hash}">${label}</button>`;
+const sayBtn = (t, label = '🔊') => `<button class="btn sm sec" data-act="say" data-t="${esc(t)}" aria-label="Play Audio">${label}</button>`;
+const bar = p => `<div class="bar"><i style="width:${Math.max(0, Math.min(100, p))}%"></i></div>`;
+const back = (h, l) => `<button class="btn sm sec" data-go="${h}">← ${l || L('Orqaga', 'Back')}</button>`;
+
+function nextLesson() { return GRAMMAR.find(g => !S.done[g.id]) || GRAMMAR[0]; }
+function weekData() { const a = []; for (let i = 6; i >= 0; i--) { const d = dayAgo(i); const r = S.daily[d] || { xp: 0, min: 0 }; a.push({ d, xp: r.xp, min: r.min }); } return a; }
+
+/* ============ HOME ============ */
+function home() {
+  if (!S.name) {
+    return view(`<div class="hero"><h1>👋 ${L('Xush kelibsiz!', 'Welcome!')}</h1><p class="muted">${L('Ismingizni kiriting va o\'rganishni boshlang.', 'Enter your name and start learning.')}</p></div>
+    <div class="card"><label>${L('Ismingiz', 'Your name')}</label><input type="text" id="nameIn" maxlength="30" placeholder="Ali">
+    <label>${L('Darajangiz', 'Your level')}</label><select id="lvlIn">${LEVELS.map(l => `<option ${l === S.level ? 'selected' : ''}>${l}</option>`).join('')}</select>
+    <p><button class="btn" data-act="saveName">▶ Start Learning</button></p></div>`);
+  }
+  const r = rec(), pct = Math.min(100, Math.round(r.xp / S.goal * 100)), nl = nextLesson();
+  const doneN = Object.keys(S.done).filter(k => GRAMMAR.some(g => g.id === k)).length;
+  const learned = Math.round(doneN / GRAMMAR.length * 100);
+  const dn = dayNum(), todayWords = Array.from({ length: 3 }, (_, i) => ALLW[(dn * 10 + i) % ALLW.length]);
+  const tg = GRAMMAR[dn % GRAMMAR.length], wk = weekData(), mx = Math.max(1, ...wk.map(x => x.min));
+  const rec3 = GRAMMAR.filter(g => !S.done[g.id] && g.id !== nl.id).slice(0, 3);
+  view(`<div class="hero"><p class="muted">${L('Xush kelibsiz!', 'Welcome back!')}</p><h1>${esc(S.avatar)} ${esc(S.name)}</h1>
+    <div class="row between"><span>🎯 ${L('Kunlik maqsad', 'Daily goal')}: ${r.xp}/${S.goal} XP</span><span>🔥 ${S.streak} ${L('kun', 'days')}</span></div>${bar(pct)}
+    <p style="margin-top:12px"><button class="btn" style="background:#fff;color:#4f46e5" data-go="#/lesson/${nl.id}">▶ ${Object.keys(S.done).length ? 'Continue Learning' : 'Start Learning'}: ${esc(nl.title)}</button></p></div>
+  <div class="grid two"><div class="card stat"><b>${learned}%</b><span class="muted">${L('O\'rganilgan mavzular', 'Topics learned')}</span></div><div class="card stat"><b>${S.xp}</b><span class="muted">XP</span></div></div>
+  <h2>📖 ${L('Bugungi yangi so\'zlar', 'Today\'s new words')}</h2>
+  <div class="card">${todayWords.map(w => `<div class="row between" style="margin:6px 0"><span><b>${esc(w.w)}</b> — ${esc(w.uz)}</span>${sayBtn(w.w)}</div>`).join('')}<p><button class="btn sm" data-go="#/flash">Flashcards</button></p></div>
+  <h2>📘 ${L('Bugungi grammatika', 'Today\'s grammar')}</h2>
+  <div class="list-item" data-go="#/lesson/${tg.id}"><div><b>${esc(tg.title)}</b><div class="muted">${esc(tg.uz)}</div></div><span class="chip">${tg.level}</span></div>
+  <h2>✅ ${L('Kunlik test va challenge', 'Daily quiz & challenge')}</h2>
+  <div class="row"><button class="btn" data-act="dailyQuiz">Start Quiz</button><button class="btn sec" data-go="#/daily">Daily Challenge</button></div>
+  <h2>📊 ${L('Haftalik statistika (daqiqa)', 'Weekly stats (minutes)')}</h2>
+  <div class="card"><div class="week">${wk.map(x => `<div><i style="height:${Math.round(x.min / mx * 90)}px"></i>${x.d.slice(8)}</div>`).join('')}</div><p class="muted">${L('Ilovada o\'tkazilgan vaqt asosida (haqiqiy ma\'lumot).', 'Based on real time spent in the app.')}</p></div>
+  ${rec3.length ? `<h2>⭐ ${L('Tavsiya etilgan darslar', 'Recommended')}</h2>` + rec3.map(g => `<div class="list-item" data-go="#/lesson/${g.id}"><div><b>${esc(g.title)}</b><div class="muted">${esc(g.uz)}</div></div><span class="chip">${g.level}</span></div>`).join('') : ''}`);
+}
+
+/* ============ LESSONS ============ */
+const SECTIONS = [['grammar', 'Grammar'], ['vocab', 'Vocabulary'], ['irregular', 'Irregular verbs'], ['reading', 'Reading'], ['listening', 'Listening'], ['speaking', 'Speaking'], ['writing', 'Writing'], ['pron', 'Pronunciation'], ['ielts', 'IELTS'], ['roadmap', 'Roadmap']];
+const PLANNED = ['Possessive adjectives/pronouns', 'Articles advanced', 'Countable & uncountable', 'Prepositions of place/time', 'Past Continuous', 'Past Perfect', 'Future Continuous / Perfect', 'Conditionals 0–3, mixed', 'Passive voice (all tenses)', 'Reported speech', 'Relative clauses', 'Gerund vs infinitive', 'Phrasal verbs & idioms dictionary', 'Question tags', 'Inversion & cleft sentences', 'Punctuation and spelling', 'C1/C2 vocabulary', 'More reading/listening texts', 'Full IELTS mock tests'];
+function lessons(sec, lvl) {
+  sec = sec || 'grammar'; lvl = lvl || 'all';
+  const tabs = `<div class="tabs">${SECTIONS.map(s => `<button class="chip ${s[0] === sec ? 'active' : ''}" data-go="#/lessons/${s[0]}">${s[1]}</button>`).join('')}</div>`;
+  const lvlBar = `<div class="tabs" style="margin:8px 0"><button class="chip ${lvl === 'all' ? 'active' : ''}" data-go="#/lessons/${sec}/all">All</button>${LEVELS.map(l => `<button class="chip ${lvl === l ? 'active' : ''}" data-go="#/lessons/${sec}/${l}">${l}</button>`).join('')}</div>`;
+  const f = x => lvl === 'all' || x.level === lvl;
+  let body = '';
+  if (sec === 'grammar') {
+    const cats = [...new Set(GRAMMAR.map(g => g.cat))];
+    body = lvlBar + cats.map(c => `<h2>${esc(c)}</h2>` + GRAMMAR.filter(g => g.cat === c && f(g)).map(g => `<div class="list-item" data-go="#/lesson/${g.id}"><div><b>${S.done[g.id] ? '✅ ' : ''}${esc(g.title)}</b><div class="muted">${esc(g.uz)}</div></div><span class="chip">${g.level}</span></div>`).join('')).join('');
+  } else if (sec === 'vocab') {
+    body = lvlBar + VOCAB.filter(f).map(t => `<div class="list-item" data-go="#/vocab/${t.id}"><div><b>${esc(t.title)}</b><div class="muted">${esc(t.uz)} · ${t.words.length} ${L('so\'z', 'words')}</div></div><span class="chip">${t.level}</span></div>`).join('') + `<div class="card"><button class="btn" data-go="#/flash">Flashcards (SRS)</button> <button class="btn sec" data-go="#/search">🔍 Dictionary</button></div>`;
+  } else if (sec === 'irregular') {
+    body = `<div class="card"><input type="search" id="irrQ" placeholder="🔍 go, went, bormoq..."><p class="muted">${IRREGULAR.length} ${L('ta fe\'l', 'verbs')}</p><div class="overflow"><table><thead><tr><th>V1</th><th>V2</th><th>V3</th><th>UZ</th><th></th></tr></thead><tbody id="irrBody">${irrRows('')}</tbody></table></div></div><button class="btn" data-act="irrQuiz">Start Quiz</button>`;
+  } else if (sec === 'reading') {
+    body = lvlBar + READING.filter(f).map(r => `<div class="list-item" data-go="#/read/${r.id}"><div><b>${S.done[r.id] ? '✅ ' : ''}${esc(r.title)}</b></div><span class="chip">${r.level}</span></div>`).join('');
+  } else if (sec === 'listening') {
+    body = lvlBar + LISTENING.filter(f).map(r => `<div class="list-item" data-go="#/listen/${r.id}"><div><b>${S.done[r.id] ? '✅ ' : ''}${esc(r.title)}</b></div><span class="chip">${r.level}</span></div>`).join('');
+  } else if (sec === 'speaking') {
+    body = `<h2>${L('Mavzular', 'Topics')}</h2>` + SPEAKING.map(s => `<div class="list-item" data-go="#/speak/${s.id}"><b>${esc(s.title)}</b><span>🎤</span></div>`).join('') +
+      `<h2>${L('Real-life dialoglar', 'Real-life dialogues')}</h2>` + DIALOGUES.map(d => `<div class="list-item" data-go="#/dlg/${d.id}"><b>${esc(d.title)}</b><span>💬</span></div>`).join('') +
+      `<h2>30-day challenge</h2><div class="card"><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">${CHALLENGE30.map((t, i) => `<button class="opt ${S.ch30.includes(i) ? 'right' : ''}" data-act="ch30" data-i="${i}" style="margin:0"><small>Day ${i + 1}</small><br>${esc(t)}</button>`).join('')}</div><p class="muted">${S.ch30.length}/30 ${L('bajarildi', 'done')}</p></div>
+      <button class="btn" data-go="#/ai">🤖 AI Speaking Assistant</button>`;
+  } else if (sec === 'writing') {
+    body = lvlBar + WRITING.filter(f).map(w => `<div class="list-item" data-go="#/write/${w.id}"><div><b>${esc(w.title)}</b><div class="muted">${esc(w.prompt.slice(0, 70))}…</div></div><span class="chip">${w.level}</span></div>`).join('');
+  } else if (sec === 'pron') {
+    body = pronHtml();
+  } else if (sec === 'ielts') {
+    body = ieltsHtml();
+  } else if (sec === 'roadmap') {
+    body = `<div class="notice">${L('Bu ro\'yxat — hali qo\'shilmagan, rejalashtirilgan modullar. Ular tayyor bo\'lganda yuqoridagi bo\'limlarda paydo bo\'ladi.', 'These are planned modules that are not available yet.')}</div><div class="card"><b>${L('Hozir mavjud', 'Available now')}</b><p>${GRAMMAR.map(g => esc(g.title)).join(' · ')}</p></div><div class="card"><b>${L('Rejalashtirilgan', 'Planned')}</b><ul style="padding-left:18px">${PLANNED.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  }
+  view(`<h1>📚 Lessons</h1>${tabs}${body}`);
+}
+function irrRows(q) { q = q.toLowerCase(); return IRREGULAR.filter(v => !q || (v.v1 + ' ' + v.v2 + ' ' + v.v3 + ' ' + v.uz).toLowerCase().includes(q)).map(v => `<tr><td><b>${esc(v.v1)}</b></td><td>${esc(v.v2)}</td><td>${esc(v.v3)}</td><td>${esc(v.uz)}</td><td>${sayBtn(v.v1 + ', ' + v.v2.split('/')[0] + ', ' + v.v3.split('/')[0])}</td></tr>`).join('') || '<tr><td colspan="5">—</td></tr>'; }
+
+const IPA = [['iː', 'sheep'], ['ɪ', 'ship'], ['e', 'bed'], ['æ', 'cat'], ['ɑː', 'car'], ['ɒ', 'hot'], ['ɔː', 'door'], ['ʊ', 'book'], ['uː', 'food'], ['ʌ', 'cup'], ['ɜː', 'bird'], ['ə', 'about'], ['θ', 'think'], ['ð', 'this'], ['ʃ', 'ship'], ['tʃ', 'chair'], ['dʒ', 'job'], ['ŋ', 'sing']];
+const PAIRS = [['ship', 'sheep'], ['bit', 'beat'], ['full', 'fool'], ['cat', 'cut'], ['think', 'sink'], ['very', 'berry'], ['light', 'right'], ['live', 'leave']];
+function pronHtml() {
+  return `<div class="notice">${L('Brauzer faqat matnni ovozga aylantiradi (namuna tinglash). Talaffuzni baholash uchun maxsus audio-tahlil xizmati kerak — hozircha mavjud emas.', 'Browser TTS gives pronunciation models only. Pronunciation scoring needs a dedicated audio-analysis service, which is not included.')}</div>
+  <h2>${L('Accent', 'Accent')}</h2><div class="row"><button class="chip ${S.accent === 'en-GB' ? 'active' : ''}" data-act="accent" data-v="en-GB">🇬🇧 British</button><button class="chip ${S.accent === 'en-US' ? 'active' : ''}" data-act="accent" data-v="en-US">🇺🇸 American</button></div>
+  <h2>Alphabet</h2><div class="card row">${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(c => `<button class="btn sm sec" data-act="say" data-t="${c}">${c}</button>`).join('')}</div>
+  <h2>IPA</h2><div class="card">${IPA.map(x => `<div class="row between" style="margin:4px 0"><span><b>/${x[0]}/</b> — ${x[1]}</span>${sayBtn(x[1])}</div>`).join('')}</div>
+  <h2>Minimal pairs</h2><div class="card">${PAIRS.map(p => `<div class="row between" style="margin:4px 0"><span>${p[0]} / ${p[1]}</span><span>${sayBtn(p[0], '🔊 ' + p[0])} ${sayBtn(p[1], '🔊 ' + p[1])}</span></div>`).join('')}</div>
+  <h2>${L('Takrorlash va transkripsiya', 'Repeat & transcribe')}</h2><div class="card"><p class="muted">${L('So\'zni tinglang, so\'ng aytib ko\'ring — brauzer nimani eshitganini ko\'rsatadi.', 'Listen, then say it — the browser shows what it heard.')}</p><div class="row"><button class="btn" data-act="micPron">🎤 Record</button></div><p id="pronOut"><b>—</b></p></div>`;
+}
+function ieltsHtml() {
+  const I = IELTS;
+  return `<div class="notice">${L('Bu bo\'limdagi mashqlar rasmiy IELTS balli emas — faqat tayyorgarlik uchun.', 'Practice only — these are not official IELTS scores.')}</div>
+  <h2>Writing — ${L('mezonlar', 'criteria')}</h2><div class="card">${I.writing.map(c => `<p><b>${c[0]}</b><br><span class="muted">${c[1]}</span></p>`).join('')}<button class="btn sm" data-go="#/write/w4">Task 2 practice</button></div>
+  <h2>Speaking — ${L('mezonlar', 'criteria')}</h2><div class="card">${I.speaking.map(c => `<p><b>${c[0]}</b><br><span class="muted">${c[1]}</span></p>`).join('')}</div>
+  <h2>Part 1</h2><div class="card">${I.part1.map(q => `<div class="row between" style="margin:6px 0"><span>${esc(q)}</span>${sayBtn(q)}</div>`).join('')}</div>
+  <h2>Part 2</h2>${I.part2.map((c, i) => `<div class="card"><b>${esc(c.card)}</b><p class="muted">You should say:</p><ul style="padding-left:18px">${c.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul><button class="btn sm" data-act="cue" data-i="${i}">⏱ 1 min prep → 2 min speak</button><p id="cue${i}" class="muted"></p></div>`).join('')}
+  <h2>Part 3</h2><div class="card">${I.part3.map(q => `<div class="row between" style="margin:6px 0"><span>${esc(q)}</span>${sayBtn(q)}</div>`).join('')}</div>
+  <h2>${L('Maslahatlar', 'Tips')}</h2><div class="card"><ul style="padding-left:18px">${I.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
+  <button class="btn" data-go="#/ai">🤖 IELTS Speaking Practice (AI)</button>`;
+}
+
+/* ---- grammar lesson page ---- */
+function lesson(id) {
+  const g = GRAMMAR.find(x => x.id === id); if (!g) return notFound();
+  const tr = S.showTr, fav = S.favLessons.includes(id);
+  view(`${back('#/lessons/grammar')}<h1>${esc(g.title)}</h1><p class="muted">${esc(g.uz)} · <span class="chip">${g.level}</span> ${S.done[id] ? '✅' : ''}</p>
+  <div class="row"><button class="btn sm sec" data-act="favLesson" data-id="${id}">${fav ? '★ Saved' : '☆ Add to Favorites'}</button><button class="btn sm sec" data-act="toggleTr">Show Translation: ${tr ? 'ON' : 'OFF'}</button></div>
+  <div class="card"><h3>📌 ${L('Sodda ta\'rif', 'Definition')}</h3><p>${esc(g.def)}</p><h3>📖 ${L('Batafsil tushuntirish', 'Explanation')}</h3><p>${esc(g.explain)}</p></div>
+  <div class="formula">${esc(g.formula).replace(/\n/g, '<br>')}</div>
+  <div class="card"><h3>🕒 ${L('Qachon ishlatiladi', 'When to use')}</h3><ul style="padding-left:18px">${g.uses.map(u => `<li>${esc(u)}</li>`).join('')}</ul>${g.signals ? `<p><b>Signal words:</b> ${esc(g.signals)}</p>` : ''}</div>
+  <div class="card"><h3>✍️ ${L('Shakllar', 'Forms')}</h3><p>✅ ${esc(g.forms.aff)}</p><p>❌ ${esc(g.forms.neg)}</p><p>❓ ${esc(g.forms.q)}</p><p>💬 ${esc(g.forms.short)}</p></div>
+  <h2>${L('Misollar', 'Examples')}</h2>${g.examples.map(e => `<div class="example"><div class="row between"><span class="en">${esc(e[0])}</span>${sayBtn(e[0])}</div>${tr ? `<div class="uz">${esc(e[1])}</div>` : ''}</div>`).join('')}
+  <h2>⚠️ ${L('Keng tarqalgan xatolar', 'Common mistakes')}</h2>${g.mistakes.map(m => `<div class="mistake">❌ <s>${esc(m[0])}</s><br>✅ <b>${esc(m[1])}</b><br><span class="muted">${esc(m[2])}</span></div>`).join('')}
+  <h2>📝 ${L('Mustaqil mashqlar', 'Exercises')}</h2>${g.exercises.map((x, i) => `<div class="card"><p>${i + 1}. ${esc(x.q)}</p><input type="text" id="ex${i}" autocomplete="off" autocapitalize="off"><div class="row" style="margin-top:8px"><button class="btn sm" data-act="exCheck" data-id="${id}" data-i="${i}">Check Answer</button><button class="btn sm sec" data-act="exShow" data-id="${id}" data-i="${i}">Show Explanation</button></div><div id="exr${i}"></div></div>`).join('')}
+  <div class="row" style="margin:14px 0"><button class="btn" data-act="lessonQuiz" data-id="${id}">Start Quiz (${g.quiz.length})</button><button class="btn ok" data-act="doneLesson" data-id="${id}">Mark as Completed</button><button class="btn sec" data-act="repeat" data-id="${id}">Repeat Lesson</button></div>
+  ${S.scores['g:' + id] != null ? `<p class="muted">${L('Oxirgi test natijasi', 'Last quiz score')}: ${S.scores['g:' + id]}%</p>` : ''}`);
+}
+
+/* ---- vocab topic ---- */
+function vocabTopic(id) {
+  const t = VOCAB.find(x => x.id === id); if (!t) return notFound();
+  view(`${back('#/lessons/vocab')}<h1>${esc(t.title)}</h1><p class="muted">${esc(t.uz)} · ${t.level}</p>
+  <div class="row"><button class="btn" data-go="#/flash/${id}">Flashcards</button><button class="btn sec" data-act="vocabQuiz" data-id="${id}">Start Quiz</button></div>
+  ${t.words.map(w => `<div class="card"><div class="row between"><div><b style="font-size:1.1rem">${esc(w.w)}</b> <span class="chip">${esc(w.pos)}</span><div>${esc(w.uz)}</div></div><div>${sayBtn(w.w)} <button class="btn sm sec" data-act="favWord" data-w="${esc(w.w)}">${S.favWords.includes(w.w) ? '★' : '☆'}</button></div></div><div class="example"><span class="en">${esc(w.en)}</span><div class="uz">${esc(w.eu)}</div></div></div>`).join('')}`);
+}
+
+/* ---- reading / listening ---- */
+function reading(id) {
+  const r = READING.find(x => x.id === id); if (!r) return notFound();
+  view(`${back('#/lessons/reading')}<h1>${esc(r.title)}</h1><p class="muted"><span class="chip">${r.level}</span> Main idea: ${esc(r.main)}</p>
+  <div class="card"><p style="font-size:1.05rem">${esc(r.text)}</p><div class="row">${sayBtn(r.text, '🔊 Play Audio')}<button class="btn sm sec" data-act="reveal" data-t="trBox">Show Translation</button></div><div id="trBox" class="explain" style="display:none">${esc(r.uz)}</div></div>
+  <div class="card"><b>${L('Yangi so\'zlar', 'New words')}</b><ul style="padding-left:18px">${r.words.map(w => `<li>${esc(w)}</li>`).join('')}</ul></div>
+  <button class="btn" data-act="textQuiz" data-id="${id}" data-k="reading">Start Quiz</button>`);
+}
+function listening(id) {
+  const r = LISTENING.find(x => x.id === id); if (!r) return notFound();
+  view(`${back('#/lessons/listening')}<h1>${esc(r.title)}</h1><p class="muted"><span class="chip">${r.level}</span></p>
+  <div class="card"><p>${L('Matnni ko\'rmasdan tinglang, so\'ng savollarga javob bering.', 'Listen first without reading, then answer the questions.')}</p>
+  <div class="row"><button class="btn" data-act="say" data-t="${esc(r.text)}">▶ Play Audio</button><button class="btn sec" data-act="sayslow" data-t="${esc(r.text)}">🐢 Slow</button></div>
+  <p class="muted">${hasTTS ? L('Audio brauzerning ovoz sintezi (TTS) orqali ijro etiladi.', 'Audio uses your browser text-to-speech.') : L('⚠️ Bu brauzerda TTS yo\'q.', '⚠️ TTS not available.')}</p>
+  <div class="row"><button class="btn sm sec" data-act="reveal" data-t="trs">Audio transcript</button></div><div id="trs" class="explain" style="display:none">${esc(r.text)}<hr style="border:0;border-top:1px solid var(--border);margin:8px 0">${esc(r.uz)}<p class="muted">${r.words.map(esc).join(' · ')}</p></div></div>
+  <button class="btn" data-act="textQuiz" data-id="${id}" data-k="listening">Start Quiz</button>`);
+}
+function speakTopic(id) {
+  const s = SPEAKING.find(x => x.id === id); if (!s) return notFound();
+  view(`${back('#/lessons/speaking')}<h1>${esc(s.title)}</h1>
+  <div class="card"><b>${L('Savollar', 'Questions')}</b>${s.questions.map(q => `<div class="row between" style="margin:6px 0"><span>${esc(q)}</span>${sayBtn(q)}</div>`).join('')}</div>
+  <div class="card"><b>${L('Namunaviy javob', 'Sample answer')}</b><p>${esc(s.sample)}</p><div class="row">${sayBtn(s.sample, '🔊 Play Audio')}<button class="btn sm sec" data-act="reveal" data-t="spTr">Show Translation</button></div><div id="spTr" class="explain" style="display:none">${esc(s.uz)}</div></div>
+  <div class="card"><b>${L('Foydali iboralar', 'Useful phrases')}</b><p>${s.phrases.map(esc).join(' · ')}</p><b>${L('Yangi so\'zlar', 'Words')}</b><p>${s.vocab.map(esc).join(' · ')}</p></div>
+  <div class="card"><b>🎤 ${L('Sizning navbatingiz', 'Your turn')}</b><textarea id="spIn" placeholder="${L('Mikrofon yoki matn orqali javob bering…', 'Answer by mic or text…')}"></textarea><div class="row" style="margin-top:8px"><button class="btn" id="micBtn" data-act="micFill" data-target="spIn">🎤 Record</button><button class="btn ok" data-act="saveSpeak" data-id="${id}">Mark as Completed</button></div><p class="muted">${L('Eslatma: mikrofon faqat transkripsiya qiladi, talaffuzni baholamaydi.', 'Note: the mic only transcribes; it does not grade pronunciation.')}</p></div>`);
+}
+function dialogue(id) {
+  const d = DIALOGUES.find(x => x.id === id); if (!d) return notFound();
+  view(`${back('#/lessons/speaking')}<h1>${esc(d.title)}</h1><div class="row"><button class="btn" data-act="playDlg" data-id="${id}">▶ Play Audio (all)</button><button class="btn sm sec" data-act="toggleTr">Show Translation: ${S.showTr ? 'ON' : 'OFF'}</button></div>
+  ${d.lines.map(l => `<div class="example"><div class="row between"><span><b>${esc(l[0])}:</b> <span class="en">${esc(l[1])}</span></span>${sayBtn(l[1])}</div>${S.showTr ? `<div class="uz">${esc(l[2])}</div>` : ''}</div>`).join('')}`);
+}
+function writing(id) {
+  const w = WRITING.find(x => x.id === id); if (!w) return notFound();
+  const saved = S.writings.filter(x => x.id === id).slice(-1)[0];
+  view(`${back('#/lessons/writing')}<h1>${esc(w.title)}</h1><p class="muted"><span class="chip">${w.level}</span></p>
+  <div class="card"><p><b>${esc(w.prompt)}</b></p><ul style="padding-left:18px">${w.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>
+  <textarea id="wIn" style="min-height:200px" placeholder="Write here…">${saved ? esc(saved.text) : ''}</textarea><p class="muted"><span id="wc">0</span> / ${w.min} ${L('so\'z', 'words')}</p>
+  <div class="row"><button class="btn" data-act="wCheck" data-id="${id}">Check Answer</button><button class="btn sec" data-act="wAI" data-id="${id}">🤖 AI feedback</button><button class="btn ok" data-act="wSave" data-id="${id}">Save Progress</button></div>
+  <div id="wOut"></div>`);
+  const ta = $('#wIn'), wc = $('#wc'); const upd = () => wc.textContent = (ta.value.trim().match(/\S+/g) || []).length; ta.addEventListener('input', upd); upd();
+}
+const LINKERS = ['however', 'moreover', 'furthermore', 'therefore', 'because', 'although', 'firstly', 'secondly', 'in conclusion', 'for example', 'in addition', 'on the other hand', 'and', 'but', 'so', 'then', 'also'];
+function writeCheck(text, w) {
+  const words = text.trim().match(/\S+/g) || [], n = words.length, sents = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+  const caps = sents.filter(s => /^[A-Z]/.test(s)).length, low = text.toLowerCase(), links = LINKERS.filter(l => low.includes(l));
+  const uniq = new Set(words.map(x => x.toLowerCase().replace(/[^a-z']/g, ''))).size, avg = sents.length ? Math.round(n / sents.length) : 0;
+  const m = [];
+  m.push((n >= w.min ? '✅' : '⚠️') + ` ${L('Uzunlik', 'Length')}: ${n}/${w.min}`);
+  m.push((sents.length && caps === sents.length ? '✅' : '⚠️') + ` ${L('Bosh harf bilan boshlangan gaplar', 'Sentences starting with capital')}: ${caps}/${sents.length}`);
+  m.push((/[.!?]\s*$/.test(text.trim()) ? '✅' : '⚠️') + ` ${L('Gap oxirida tinish belgisi', 'Ends with punctuation')}`);
+  m.push((links.length >= 2 ? '✅' : '⚠️') + ` ${L('Bog\'lovchi so\'zlar', 'Linking words')}: ${links.join(', ') || '—'}`);
+  m.push((n && uniq / n > .5 ? '✅' : '⚠️') + ` ${L('Lug\'at xilma-xilligi', 'Vocabulary variety')}: ${n ? Math.round(uniq / n * 100) : 0}%`);
+  m.push(`ℹ️ ${L('O\'rtacha gap uzunligi', 'Average sentence length')}: ${avg} ${L('so\'z', 'words')}`);
+  return m;
+}
+
+/* ============ PRACTICE ============ */
+function practice() {
+  const due = Object.values(S.srs).filter(r => r.due <= Date.now()).length;
+  const item = (go, ico, t, d) => `<div class="list-item" ${go.startsWith('#') ? `data-go="${go}"` : `data-act="${go}"`}><div><b>${ico} ${t}</b><div class="muted">${d}</div></div><span>›</span></div>`;
+  view(`<h1>🎯 Practice</h1>
+  ${item('#/ai', '🤖', 'AI Speaking Assistant', L('AI bilan ingliz tilida suhbat', 'Chat with an AI tutor'))}
+  ${item('#/daily', '🔥', 'Daily Challenge', L('Kunlik topshiriqlar + XP', 'Daily tasks + XP'))}
+  ${item('#/flash', '🃏', 'Flashcards (SRS)', due + ' ' + L('ta so\'z takrorga tayyor', 'cards due'))}
+  ${item('mixedQuiz', '🧩', 'Mixed quiz', L('Grammatika + lug\'at', 'Grammar + vocabulary'))}
+  ${item('grammarQuizAll', '📘', 'Grammar quiz', L('Barcha grammatika testlaridan', 'From all grammar quizzes'))}
+  ${item('vocabQuizAll', '📖', 'Vocabulary quiz', L('So\'z ma\'nosini topish', 'Find the meaning'))}
+  ${item('timed', '⏱', 'Timed test', L('5 daqiqa, 15 savol', '5 min, 15 questions'))}
+  ${item('#/typing', '⌨️', 'Typing / Translation practice', L('O\'zbekchadan inglizchaga yozing', 'Type the English word'))}
+  ${item('#/builder', '🧱', 'Sentence builder', L('So\'zlarni tartiblang', 'Arrange the words'))}
+  ${item('review', '🔁', 'Review Mistakes', S.mistakes.length + ' ' + L('ta xato saqlangan', 'saved mistakes'))}
+  ${item('#/search', '🔍', 'Dictionary & Search', L('Lug\'at va darslar bo\'yicha qidiruv', 'Search words and lessons'))}`);
+}
+
+/* ---- quiz engine ---- */
+let QZ = null;
+function startQuiz(qs, opt) {
+  if (!qs.length) { toast(L('Savollar topilmadi.', 'No questions.')); return; }
+  qs = shuffle(qs).slice(0, opt.count || 20).map(q => { const idx = q.o.map((_, i) => i); const keep = /^(True|False|Not Given|Yes|No)$/i.test(q.o[0]); const ord = keep ? idx : shuffle(idx); return { q: q.q, o: ord.map(i => q.o[i]), a: ord.indexOf(q.a), e: q.e, sel: null, checked: false, show: false }; });
+  QZ = { qs, i: 0, opt, t0: Date.now(), left: opt.timed || 0 }; clearTimers();
+  if (location.hash === '#/quiz') quizView(); else location.hash = '#/quiz';
+}
+function quizView() {
+  if (!QZ) return practice();
+  if (QZ.opt.timed && !timers.length) timers.push(setInterval(() => { QZ.left--; const el = $('#qzT'); if (el) el.textContent = pad(Math.floor(QZ.left / 60)) + ':' + pad(QZ.left % 60); if (QZ.left <= 0) { clearTimers(); finishQuiz(); } }, 1000));
+  const q = QZ.qs[QZ.i], n = QZ.qs.length;
+  view(`<div class="row between"><b>${esc(QZ.opt.title)}</b>${QZ.opt.timed ? `<span class="chip" id="qzT">${pad(Math.floor(QZ.left / 60))}:${pad(QZ.left % 60)}</span>` : ''}<span class="muted">${QZ.i + 1}/${n}</span></div>${bar((QZ.i + 1) / n * 100)}
+  <div class="card"><h3>${esc(q.q)}</h3>${q.o.map((o, i) => { let c = 'opt'; if (q.checked) { if (i === q.a) c += ' right'; else if (i === q.sel) c += ' wrong'; } else if (i === q.sel) c += ' sel'; return `<button class="${c}" data-act="pick" data-i="${i}">${esc(o)}</button>`; }).join('')}
+  <div class="row"><button class="btn" data-act="qcheck" ${q.sel == null || q.checked ? 'disabled' : ''}>Check Answer</button><button class="btn sec" data-act="qexp" ${q.checked ? '' : 'disabled'}>Show Explanation</button></div>
+  ${q.show ? `<div class="explain">${q.sel === q.a ? '✅ ' : '❌ '}<b>${esc(q.o[q.a])}</b><br>${esc(q.e || '')}</div>` : ''}</div>
+  <div class="row between"><button class="btn sec" data-act="qprev" ${QZ.i === 0 ? 'disabled' : ''}>← Previous Question</button>${QZ.i < n - 1 ? `<button class="btn" data-act="qnext">Next Question →</button>` : `<button class="btn ok" data-act="qfinish">Finish</button>`}</div>`);
+}
+function finishQuiz() {
+  clearTimers(); const Z = QZ; if (!Z) return; const n = Z.qs.length; Z.qs.forEach(q => { if (q.sel != null && !q.checked) q.checked = true; });
+  const ok = Z.qs.filter(q => q.sel === q.a).length, pct = Math.round(ok / n * 100), wrong = Z.qs.filter(q => q.sel !== q.a);
+  S.quizzes.push({ title: Z.opt.title, pct, date: today(), n });
+  if (Z.opt.id) S.scores[Z.opt.id] = pct;
+  wrong.forEach(q => { if (!S.mistakes.some(m => m.q === q.q)) S.mistakes.push({ q: q.q, o: q.o, a: q.a, e: q.e }); });
+  if (Z.opt.review) { const right = Z.qs.filter(q => q.sel === q.a).map(q => q.q); S.mistakes = S.mistakes.filter(m => !right.includes(m.q)); }
+  S.mistakes = S.mistakes.slice(-100);
+  if (Z.opt.onFinish) Z.opt.onFinish(pct);
+  addXP(ok * 2, Z.opt.skill || 'grammar');
+  const mins = Math.max(1, Math.round((Date.now() - Z.t0) / 60000));
+  view(`<div class="hero" style="text-align:center"><h1>${pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '💪'} ${pct}%</h1><p>${esc(Z.opt.title)}</p></div>
+  <div class="grid"><div class="card stat"><b>${n}</b>${L('Jami', 'Total')}</div><div class="card stat"><b style="color:var(--ok)">${ok}</b>${L('To\'g\'ri', 'Correct')}</div><div class="card stat"><b style="color:var(--bad)">${n - ok}</b>${L('Noto\'g\'ri', 'Wrong')}</div></div>
+  <p class="muted">⏱ ${mins} ${L('daq', 'min')} · +${ok * 2} XP</p>
+  ${wrong.length ? `<h2>${L('Xatolar izohi', 'Mistakes explained')}</h2>${wrong.map(q => `<div class="mistake"><b>${esc(q.q)}</b><br>❌ ${q.sel != null ? esc(q.o[q.sel]) : '—'}<br>✅ <b>${esc(q.o[q.a])}</b><br><span class="muted">${esc(q.e || '')}</span></div>`).join('')}` : `<p>🌟 ${L('Hammasi to\'g\'ri!', 'All correct!')}</p>`}
+  <div class="row"><button class="btn" data-act="qretry">Retry</button>${wrong.length ? '<button class="btn warn" data-act="review">Review Mistakes</button>' : ''}<button class="btn sec" data-act="qnextTest">Next Test →</button></div>`);
+}
+
+/* ---- flashcards ---- */
+let FC = null;
+function flash(topic) {
+  const now = Date.now(); let pool = ALLW.filter(w => !topic || w.topic === topic);
+  const dueW = pool.filter(w => S.srs[w.w] && S.srs[w.w].due <= now), newW = pool.filter(w => !S.srs[w.w]).slice(0, 10);
+  const queue = shuffle(dueW.concat(newW)).slice(0, 25);
+  FC = { queue, i: 0, flipped: false, topic, total: queue.length };
+  flashView();
+}
+function flashView() {
+  if (!FC || !FC.queue.length) return view(`${back('#/practice')}<div class="card" style="text-align:center"><h2>🎉 ${L('Hozircha takrorlash kerak bo\'lgan so\'z yo\'q', 'Nothing due right now')}</h2><p class="muted">${L('Keyinroq qaytib keling — yoki boshqa mavzuni tanlang.', 'Come back later or pick another topic.')}</p><button class="btn" data-go="#/lessons/vocab">Vocabulary</button></div>`);
+  if (FC.i >= FC.queue.length) { addXP(Math.min(30, FC.total * 2), 'vocab'); return view(`<div class="hero" style="text-align:center"><h1>🎉 ${L('Seans tugadi', 'Session complete')}</h1><p>${FC.total} ${L('ta kartochka', 'cards')}</p></div><button class="btn" data-go="#/practice">OK</button>`); }
+  const w = FC.queue[FC.i], r = S.srs[w.w];
+  view(`<div class="row between">${back('#/practice')}<span class="muted">${FC.i + 1}/${FC.queue.length}</span></div>${bar(FC.i / FC.queue.length * 100)}
+  <div class="flash"><div class="flash-inner" data-act="flip">${FC.flipped ? `<div class="big">${esc(w.uz)}</div><p>${esc(w.en)}</p><p style="opacity:.85">${esc(w.eu)}</p><span class="chip">${esc(w.pos)}</span>` : `<div class="big">${esc(w.w)}</div><p style="opacity:.85">${L('Tarjimani ko\'rish uchun bosing', 'Tap to flip')}</p>`}</div></div>
+  <div class="row between">${sayBtn(w.w, '🔊 Play Audio')}<button class="btn sm sec" data-act="favWord" data-w="${esc(w.w)}">${S.favWords.includes(w.w) ? '★' : '☆'} Favorite</button></div>
+  ${FC.flipped ? `<div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:12px"><button class="btn bad sm" data-act="grade" data-g="again">Again</button><button class="btn warn sm" data-act="grade" data-g="hard">Hard</button><button class="btn sm" data-act="grade" data-g="good">Good</button><button class="btn ok sm" data-act="grade" data-g="easy">Easy</button></div>` : `<p class="muted" style="text-align:center;margin-top:12px">${r ? L('Oraliq', 'Interval') + ': ' + r.iv + ' ' + L('kun', 'd') : L('Yangi so\'z', 'New card')}</p>`}`);
+}
+function gradeCard(g) {
+  const w = FC.queue[FC.i]; const r = S.srs[w.w] || { n: 0, iv: 0, due: 0 };
+  if (g === 'again') { r.iv = 0; r.n = 0; r.due = Date.now() + 6e4; FC.queue.push(w); }
+  else { r.n++; const b = r.iv || 1; r.iv = g === 'hard' ? Math.max(1, Math.round(b * 1.2)) : g === 'good' ? Math.max(1, Math.round(b * 2.2)) : Math.max(2, Math.round(b * 3.5)); r.due = Date.now() + r.iv * 864e5; }
+  S.srs[w.w] = r; save(); FC.i++; FC.flipped = false; flashView();
+}
+
+/* ---- daily challenge ---- */
+function daily() {
+  const dn = dayNum(), t = today(); const c = S.ch[t] = S.ch[t] || {};
+  const words = Array.from({ length: 10 }, (_, i) => ALLW[(dn * 10 + i) % ALLW.length]), g = GRAMMAR[dn % GRAMMAR.length], lis = LISTENING[dn % LISTENING.length], rd = READING[dn % READING.length];
+  const sp = SPEAKING[dn % SPEAKING.length], spq = sp.questions[dn % sp.questions.length], wr = WRITING[dn % WRITING.length];
+  const done = k => c[k] ? '✅' : '⬜';
+  const row = (k, ico, title, body, extra) => `<div class="card"><div class="row between"><b>${done(k)} ${ico} ${title}</b><span class="chip">+10 XP</span></div>${body}<div class="row" style="margin-top:8px">${extra || ''}${c[k] ? '' : `<button class="btn sm ok" data-act="chDone" data-k="${k}">Mark as Completed</button>`}</div></div>`;
+  const total = 7, n = Object.keys(c).length;
+  view(`${back('#/practice')}<h1>🔥 Daily Challenge</h1>${bar(n / total * 100)}<p class="muted">${n}/${total}</p>
+  ${row('words', '📖', L('10 ta yangi so\'z', '10 new words'), words.map(w => `<div class="row between" style="margin:4px 0"><span><b>${esc(w.w)}</b> — ${esc(w.uz)}</span>${sayBtn(w.w)}</div>`).join(''))}
+  ${row('grammar', '📘', 'Grammar', `<p>${esc(g.title)} — ${esc(g.uz)}</p>`, `<button class="btn sm" data-go="#/lesson/${g.id}">Start Learning</button>`)}
+  ${row('quiz', '🧪', '5 grammar test', `<p class="muted">${esc(g.title)}</p>`, `<button class="btn sm" data-act="chQuiz" data-id="${g.id}">Start Quiz</button>`)}
+  ${row('listening', '🎧', 'Listening', `<p>${esc(lis.title)}</p>`, `<button class="btn sm" data-go="#/listen/${lis.id}">Open</button>`)}
+  ${row('reading', '📄', 'Reading', `<p>${esc(rd.title)}</p>`, `<button class="btn sm" data-go="#/read/${rd.id}">Open</button>`)}
+  ${row('speaking', '🎤', 'Speaking', `<p>${esc(spq)}</p>`, sayBtn(spq))}
+  ${row('writing', '✍️', 'Writing', `<p>${esc(wr.prompt)}</p>`, `<button class="btn sm" data-go="#/write/${wr.id}">Open</button>`)}`);
+}
+
+/* ---- typing & builder ---- */
+let TY = null;
+function typing() {
+  TY = TY || { w: null };
+  TY.w = pick(ALLW, 1)[0];
+  view(`${back('#/practice')}<h1>⌨️ Translation practice</h1><div class="card"><p class="muted">${L('Inglizchasini yozing:', 'Type the English word:')}</p><h2 style="margin-top:0">${esc(TY.w.uz)}</h2><input type="text" id="tyIn" autocomplete="off" autocapitalize="off"><div class="row" style="margin-top:8px"><button class="btn" data-act="tyCheck">Check Answer</button><button class="btn sec" data-act="typing">Next →</button></div><div id="tyOut"></div></div>`);
+}
+let BD = null;
+function builder() {
+  const ex = pick(GRAMMAR.flatMap(g => g.examples).filter(e => e[0].split(' ').length >= 3 && e[0].split(' ').length <= 8 && !/[—]/.test(e[0])), 1)[0]; if (!ex) return practice();
+  BD = { ans: ex[0], uz: ex[1], words: shuffle(ex[0].replace(/[.?!]$/, '').split(' ')), built: [], punct: (ex[0].match(/[.?!]$/) || [''])[0] };
+  builderView();
+}
+function builderView() {
+  view(`${back('#/practice')}<h1>🧱 Sentence builder</h1><div class="card"><p class="muted">${L('Tarjimaga mos gapni tuzing:', 'Build the sentence:')}</p><h3>${esc(BD.uz)}</h3>
+  <div class="explain" style="min-height:44px">${BD.built.map((w, i) => `<button class="chip" data-act="bdUn" data-i="${i}">${esc(w)}</button> `).join('') || '…'}</div>
+  <div class="row" style="margin:10px 0">${BD.words.map((w, i) => BD.built.includes(i) ? '' : `<button class="btn sm sec" data-act="bdAdd" data-i="${i}">${esc(w)}</button>`).join('')}</div>
+  <div class="row"><button class="btn" data-act="bdCheck">Check Answer</button><button class="btn sec" data-act="builder">Next →</button></div><div id="bdOut"></div></div>`);
+}
+
+/* ---- search / dictionary ---- */
+function search() {
+  view(`${back('#/home')}<h1>🔍 Search</h1><input type="search" id="sq" placeholder="${L('So\'z, mavzu yoki dars…', 'Word, topic or lesson…')}" autofocus><div id="sres" class="muted" style="margin-top:12px">${L('Qidirish uchun yozing.', 'Type to search.')}</div>`);
+}
+function runSearch(q) {
+  q = q.trim().toLowerCase(); const out = $('#sres'); if (!q) { out.innerHTML = L('Qidirish uchun yozing.', 'Type to search.'); return; }
+  const g = GRAMMAR.filter(x => (x.title + ' ' + x.uz + ' ' + x.def).toLowerCase().includes(q)), w = ALLW.filter(x => (x.w + ' ' + x.uz).toLowerCase().includes(q)).slice(0, 25), iv = IRREGULAR.filter(x => (x.v1 + ' ' + x.v2 + ' ' + x.v3 + ' ' + x.uz).toLowerCase().includes(q)).slice(0, 10);
+  const rd = READING.filter(x => x.title.toLowerCase().includes(q)), ls = LISTENING.filter(x => x.title.toLowerCase().includes(q));
+  let h = '';
+  if (g.length) h += '<h3>Grammar</h3>' + g.map(x => `<div class="list-item" data-go="#/lesson/${x.id}"><b>${esc(x.title)}</b><span class="chip">${x.level}</span></div>`).join('');
+  if (w.length) h += '<h3>Vocabulary</h3>' + w.map(x => `<div class="card"><div class="row between"><span><b>${esc(x.w)}</b> <span class="chip">${esc(x.pos)}</span> — ${esc(x.uz)}<br><span class="muted">${esc(x.en)}</span></span>${sayBtn(x.w)}</div></div>`).join('');
+  if (iv.length) h += '<h3>Irregular verbs</h3>' + iv.map(x => `<div class="card"><b>${esc(x.v1)}</b> — ${esc(x.v2)} — ${esc(x.v3)} · ${esc(x.uz)}</div>`).join('');
+  if (rd.length) h += '<h3>Reading</h3>' + rd.map(x => `<div class="list-item" data-go="#/read/${x.id}"><b>${esc(x.title)}</b></div>`).join('');
+  if (ls.length) h += '<h3>Listening</h3>' + ls.map(x => `<div class="list-item" data-go="#/listen/${x.id}"><b>${esc(x.title)}</b></div>`).join('');
+  out.innerHTML = h || L('Hech narsa topilmadi.', 'Nothing found.');
+}
+
+/* ============ PROGRESS ============ */
+function progress() {
+  const gDone = GRAMMAR.filter(g => S.done[g.id]).length, tot = Object.values(S.daily).reduce((a, r) => a + r.min, 0);
+  const avg = S.quizzes.length ? Math.round(S.quizzes.reduce((a, q) => a + q.pct, 0) / S.quizzes.length) : 0;
+  const sk = S.skills, mx = Math.max(50, ...Object.values(sk));
+  const wk = weekData(), mxw = Math.max(1, ...wk.map(x => x.xp));
+  const month = Array.from({ length: 30 }, (_, i) => S.daily[dayAgo(i)] || { xp: 0, min: 0 }), mXp = month.reduce((a, r) => a + r.xp, 0), mMin = month.reduce((a, r) => a + r.min, 0);
+  const weak = GRAMMAR.filter(g => S.scores['g:' + g.id] != null && S.scores['g:' + g.id] < 70);
+  const cal = Array.from({ length: 28 }, (_, i) => { const d = dayAgo(27 - i); const r = S.daily[d]; return `<div title="${d}" style="aspect-ratio:1;border-radius:8px;background:${r && r.xp ? 'var(--primary)' : 'var(--border)'};opacity:${r && r.xp ? Math.min(1, .4 + r.xp / 100) : 1}"></div>`; }).join('');
+  view(`<h1>📈 Progress</h1>
+  <div class="grid two"><div class="card stat"><b>🔥 ${S.streak}</b><span class="muted">${L('Ketma-ket kun', 'Day streak')}</span></div><div class="card stat"><b>${S.xp}</b><span class="muted">XP</span></div>
+  <div class="card stat"><b>${gDone}/${GRAMMAR.length}</b><span class="muted">${L('Tugatilgan darslar', 'Lessons done')}</span></div><div class="card stat"><b>${masteredCount()}</b><span class="muted">${L('O\'zlashtirilgan so\'zlar', 'Mastered words')}</span></div>
+  <div class="card stat"><b>${avg}%</b><span class="muted">${L('Test o\'rtachasi', 'Avg quiz')} (${S.quizzes.length})</span></div><div class="card stat"><b>${Math.round(tot)}</b><span class="muted">${L('Jami daqiqa', 'Total minutes')}</span></div></div>
+  <h2>${L('Ko\'nikmalar (XP)', 'Skills (XP)')}</h2><div class="card">${Object.entries(sk).map(([k, v]) => `<div style="margin:8px 0"><div class="row between"><span>${k}</span><span class="muted">${v}</span></div>${bar(v / mx * 100)}</div>`).join('')}</div>
+  <h2>${L('Haftalik', 'Weekly')} XP</h2><div class="card"><div class="week">${wk.map(x => `<div><i style="height:${Math.round(x.xp / mxw * 90)}px"></i>${x.d.slice(8)}</div>`).join('')}</div></div>
+  <h2>${L('Oylik (30 kun)', 'Monthly (30 days)')}</h2><div class="card">XP: <b>${mXp}</b> · ${L('daqiqa', 'minutes')}: <b>${Math.round(mMin)}</b></div>
+  <h2>${L('O\'quv taqvimi', 'Study calendar')}</h2><div class="card"><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px">${cal}</div></div>
+  <h2>${L('Takrorlash kerak', 'Needs review')}</h2>${weak.length ? weak.map(g => `<div class="list-item" data-go="#/lesson/${g.id}"><b>${esc(g.title)}</b><span class="chip">${S.scores['g:' + g.id]}%</span></div>`).join('') : `<p class="muted">${L('Hozircha 70% dan past natija yo\'q.', 'No topics below 70%.')}</p>`}
+  ${S.mistakes.length ? `<button class="btn warn" data-act="review">Review Mistakes (${S.mistakes.length})</button>` : ''}
+  <h2>🏅 Badges</h2><div class="row">${BADGES.map(b => `<span class="chip ${S.badges.includes(b[0]) ? 'active' : ''}" style="${S.badges.includes(b[0]) ? '' : 'opacity:.5'}">${b[1]}</span>`).join('')}</div>
+  ${S.speakSessions.length ? `<h2>🗣 ${L('Speaking seanslari', 'Speaking sessions')}</h2>${S.speakSessions.slice(-5).reverse().map(s => `<div class="card">${s.date} · ${esc(s.mode)} · ${s.min} min · ${s.answers} ${L('javob', 'answers')} · ${s.fixes} ${L('tuzatish', 'fixes')}</div>`).join('')}` : ''}
+  <div class="row" style="margin-top:14px"><button class="btn" data-act="saveAll">Save Progress</button><button class="btn bad" data-act="resetProg">Reset Progress</button></div>`);
+}
+
+/* ============ PROFILE ============ */
+function profile() {
+  const av = ['🎓', '🦊', '🐼', '🦁', '🚀', '🌟', '📚', '🧠'], topics = ['Travel', 'Work', 'IELTS', 'Technology', 'Food', 'Sports', 'Music', 'Science'];
+  view(`<h1>👤 Profile</h1>
+  <div class="card"><label>${L('Ism', 'Name')}</label><input type="text" id="pName" value="${esc(S.name)}" maxlength="30">
+  <label>Avatar</label><div class="row">${av.map(a => `<button class="chip ${S.avatar === a ? 'active' : ''}" style="font-size:1.4rem" data-act="avatar" data-v="${a}">${a}</button>`).join('')}</div>
+  <label>${L('Ingliz tili darajasi', 'English level')} (Change Level)</label><select id="pLevel">${LEVELS.map(l => `<option ${l === S.level ? 'selected' : ''}>${l}</option>`).join('')}</select>
+  <label>${L('Kunlik maqsad (XP)', 'Daily goal (XP)')}</label><select id="pGoal">${[30, 50, 100, 150].map(g => `<option ${g === S.goal ? 'selected' : ''}>${g}</option>`).join('')}</select>
+  <label>${L('O\'rganish sababi', 'Reason')}</label><select id="pReason">${['', 'IELTS', 'Study abroad', 'Work', 'Travel', 'Hobby'].map(r => `<option value="${r}" ${r === S.reason ? 'selected' : ''}>${r || '—'}</option>`).join('')}</select>
+  <label>${L('Sevimli mavzular', 'Favourite topics')}</label><div class="row">${topics.map(t => `<button class="chip ${S.topics.includes(t) ? 'active' : ''}" data-act="topic" data-v="${t}">${t}</button>`).join('')}</div>
+  <label>${L('Interfeys tili', 'Interface language')}</label><select id="pLang"><option value="uz" ${S.lang === 'uz' ? 'selected' : ''}>O'zbekcha</option><option value="en" ${S.lang === 'en' ? 'selected' : ''}>English</option></select>
+  <label>Accent (audio)</label><select id="pAcc"><option value="en-US" ${S.accent === 'en-US' ? 'selected' : ''}>American</option><option value="en-GB" ${S.accent === 'en-GB' ? 'selected' : ''}>British</option></select>
+  <label>🌙 Dark mode</label><button class="btn sec" data-act="theme">${S.theme === 'dark' ? 'ON' : 'OFF'}</button>
+  <label>${L('Bildirishnoma', 'Notifications')}</label><button class="btn sec" data-act="notif">${S.notif ? 'ON' : 'OFF'}</button><p class="muted">${L('Kunlik maqsad bajarilganda brauzer bildirishnomasi (ilova ochiq bo\'lganda ishlaydi).', 'Browser notification when the daily goal is reached (works while the app is open).')}</p>
+  <label>AI backend URL</label><input type="text" id="pAI" value="${esc(S.aiUrl)}"><p class="muted">${L('AI Speaking uchun serverless funksiya manzili (README ga qarang). API kalit bu yerga yozilmaydi.', 'URL of the serverless AI function (see README). Never put an API key here.')}</p>
+  <div class="row"><button class="btn" data-act="saveProfile">Save Progress</button><button class="btn bad" data-act="clearAll">${L('Ma\'lumotlarni tozalash', 'Clear all data')}</button></div></div>
+  <h2>${L('Saqlangan darslar', 'Saved lessons')}</h2>${S.favLessons.length ? S.favLessons.map(id => { const g = GRAMMAR.find(x => x.id === id); return g ? `<div class="list-item" data-go="#/lesson/${id}"><b>${esc(g.title)}</b></div>` : ''; }).join('') : `<p class="muted">—</p>`}
+  <h2>${L('Sevimli so\'zlar', 'Favorite words')}</h2><p>${S.favWords.length ? S.favWords.map(w => `<span class="chip">${esc(w)}</span>`).join(' ') : '—'}</p>`);
+}
+
+/* ============ AI SPEAKING ============ */
+const MODES = ['Free Conversation', 'Daily English', 'IELTS Speaking Practice', 'Job Interview', 'Travel English', 'School English', 'Debate Practice', 'Pronunciation Practice', 'Grammar Correction', 'Vocabulary Practice', 'Roleplay', 'Picture Description'];
+const AILV = ['A1 Beginner', 'A2 Elementary', 'B1 Intermediate', 'B2 Upper-Intermediate', 'C1 Advanced', 'IELTS Speaking'];
+let AI = null;
+function aiHome() {
+  view(`${back('#/practice')}<h1>🤖 AI Speaking Assistant</h1><div class="notice">${L('AI haqiqiy til modeli serveri orqali ishlaydi. Server sozlanmagan bo\'lsa, ilova buni aniq aytadi va soxta javob ko\'rsatmaydi.', 'The AI runs through a real language-model backend. If it is not configured, the app says so and does not fake replies.')}</div>
+  <div class="card"><label>${L('Daraja', 'Level')}</label><select id="aiLv">${AILV.map(l => `<option ${l.startsWith(S.level) ? 'selected' : ''}>${l}</option>`).join('')}</select>
+  <label>${L('Rejim', 'Mode')}</label><select id="aiMode">${MODES.map(m => `<option>${m}</option>`).join('')}</select>
+  <label>${L('Xatolarni tuzatish', 'Corrections')}</label><select id="aiFix"><option value="end">${L('Suhbat oxirida (tavsiya)', 'At the end (recommended)')}</option><option value="each">${L('Har javobdan keyin', 'After each answer')}</option></select>
+  <p><button class="btn" data-act="aiStart">▶ ${L('Suhbatni boshlash', 'Start conversation')}</button></p></div>
+  ${S.speakSessions.length ? `<p class="muted">${L('Oldingi seanslar', 'Past sessions')}: ${S.speakSessions.length}</p>` : ''}`);
+}
+function aiStart() {
+  AI = { mode: $('#aiMode').value, level: $('#aiLv').value, fix: $('#aiFix').value, msgs: [], t0: Date.now(), paused: false, busy: false, fixes: 0, vocab: [], good: [], err: '' };
+  aiView(); aiCall();
+}
+function aiView() {
+  if (!AI) return aiHome();
+  const m = AI.msgs;
+  view(`<div class="row between"><div class="row"><div class="avatar">🤖</div><div><b>${esc(AI.mode)}</b><div class="muted">${esc(AI.level)} · <span id="aiTime">00:00</span></div></div></div><div class="row"><button class="btn sm sec" data-act="aiPause">${AI.paused ? '▶ Resume' : '⏸ Pause'}</button><button class="btn sm bad" data-act="aiEnd">⏹ End</button></div></div>
+  <div class="chat" id="chat">${m.map((x, i) => x.role === 'assistant' ? `<div><div class="msg ai">${esc(x.text)}</div><div class="row" style="margin:4px 0">${sayBtn(x.text, '🔊 Play Audio')}<button class="btn sm sec" data-act="aiTr" data-i="${i}">${x.uz ? 'Hide' : 'Show'} Translation</button></div>${x.uz ? `<div class="fb">${esc(x.uz)}</div>` : ''}</div>` : `<div style="align-self:flex-end;max-width:92%"><div class="msg user">${esc(x.text)}</div>${x.fb ? `<div class="fb">${x.showFb ? aiFb(x.fb) : `<button class="btn sm sec" data-act="aiFb" data-i="${i}">${L('Xatolarni ko\'rish', 'View feedback')}</button>`}</div>` : ''}</div>`).join('')}${AI.busy ? '<div class="msg ai">…</div>' : ''}</div>
+  ${AI.err ? `<div class="notice">${AI.err}</div>` : ''}
+  <div class="card"><textarea id="aiIn" placeholder="Type your answer in English…" ${AI.paused ? 'disabled' : ''}></textarea><div class="row" style="margin-top:8px"><button class="btn" id="aiMic" data-act="micFill" data-target="aiIn" ${AI.paused ? 'disabled' : ''}>🎤</button><button class="btn" data-act="aiSend" ${AI.paused || AI.busy ? 'disabled' : ''}>Send</button><button class="btn sec" data-act="aiUz">${L('O\'zbekcha izoh so\'rash', 'Ask in Uzbek')}</button></div></div>`);
+  const c = $('#chat'); if (c) c.scrollTop = c.scrollHeight;
+  clearTimers(); timers.push(setInterval(() => { const e = $('#aiTime'); if (!e || !AI) return; const s = Math.floor((Date.now() - AI.t0) / 1000); e.textContent = pad(Math.floor(s / 60)) + ':' + pad(s % 60); }, 1000));
+}
+function aiFb(f) { return `<b>Corrected answer:</b> ${esc(f.corrected || '—')}<br><b>Uzbek explanation:</b> ${esc(f.explanation_uz || '—')}<br><b>Better expression:</b> ${esc(f.better || '—')}<br><b>New vocabulary:</b> ${esc((f.vocab || []).join(', ') || '—')}<br><b>Follow-up question:</b> ${esc(f.followup || '—')}`; }
+async function aiCall(action) {
+  AI.busy = true; AI.err = ''; aiView();
+  try {
+    const r = await fetch(S.aiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: action || 'chat', mode: AI.mode, level: AI.level, correction: AI.fix, messages: AI.msgs.map(m => ({ role: m.role, content: m.text })) }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    const rep = AI.msgs.filter(m => m.role === 'user').slice(-1)[0];
+    if (d.feedback && rep) { rep.fb = d.feedback; if (d.feedback.corrected && d.feedback.corrected.trim() && d.feedback.corrected.trim() !== rep.text.trim()) AI.fixes++; (d.feedback.vocab || []).forEach(v => { if (!AI.vocab.includes(v)) AI.vocab.push(v); }); (d.feedback.good_phrases || []).forEach(v => AI.good.push(v)); if (AI.fix === 'each') rep.showFb = true; }
+    AI.msgs.push({ role: 'assistant', text: d.reply || '…' });
+  } catch (e) {
+    AI.err = '⚠️ ' + L('AI serveriga ulanib bo\'lmadi', 'Could not reach the AI backend') + ' (' + esc(S.aiUrl) + '): ' + esc(e.message) + '. ' + L('README dagi "AI backend" bo\'limiga qarang: funksiyani joylang va Profile → AI backend URL ga manzilni kiriting. Hozircha AI javob bera olmaydi.', 'See "AI backend" in the README: deploy the function and set its URL in Profile → AI backend URL. Until then the AI cannot reply.');
+  }
+  AI.busy = false; aiView();
+}
+function aiEnd() {
+  if (!AI) return; clearTimers(); const A = AI, min = Math.max(1, Math.round((Date.now() - A.t0) / 60000));
+  const asked = A.msgs.filter(m => m.role === 'assistant').length, ans = A.msgs.filter(m => m.role === 'user').length;
+  if (ans) { S.speakSessions.push({ date: today(), mode: A.mode, min, answers: ans, fixes: A.fixes, vocab: A.vocab }); addXP(Math.min(40, ans * 5), 'speaking'); }
+  view(`<div class="hero" style="text-align:center"><h1>🎤 ${L('Suhbat natijalari', 'Session results')}</h1><p>${esc(A.mode)} · ${esc(A.level)}</p></div>
+  <div class="grid"><div class="card stat"><b>${min}</b>${L('daqiqa', 'min')}</div><div class="card stat"><b>${asked}</b>${L('Savollar', 'Questions')}</div><div class="card stat"><b>${ans}</b>${L('Javoblar', 'Answers')}</div><div class="card stat"><b>${A.fixes}</b>${L('Tuzatilgan xatolar', 'Corrections')}</div></div>
+  <div class="card"><b>${L('O\'rganilgan yangi so\'zlar', 'New vocabulary')}</b><p>${A.vocab.length ? A.vocab.map(esc).join(', ') : '—'}</p><b>${L('Yaxshi iboralar', 'Good phrases')}</b><p>${A.good.length ? A.good.map(esc).join(', ') : '—'}</p></div>
+  <p class="muted">${ans ? L('Natijalar Progress sahifasiga qo\'shildi.', 'Saved to Progress.') : L('Hech qanday javob berilmadi — natija saqlanmadi.', 'No answers given — nothing saved.')}</p>
+  <div class="row"><button class="btn" data-go="#/ai" data-act="aiReset">${L('Yangi suhbat', 'New session')}</button><button class="btn sec" data-go="#/progress">Progress</button></div>`);
+  AI = null;
+}
+
+/* ============ misc views ============ */
+function notFound() { view(`<div class="card"><h2>${L('Sahifa topilmadi', 'Not found')}</h2>${goBtn('#/home', 'Home')}</div>`); }
+function setNav(r) { document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('active', b.dataset.route === r)); }
+
+/* ============ router ============ */
+function route() {
+  clearTimers();
+  const p = (location.hash || '#/home').replace(/^#\//, '').split('/'), r = p[0] || 'home', a = p[1], b = p[2];
+  const main = { home: 'home', lessons: 'lessons', lesson: 'lessons', vocab: 'lessons', read: 'lessons', listen: 'lessons', speak: 'lessons', dlg: 'lessons', write: 'lessons', practice: 'practice', quiz: 'practice', flash: 'practice', daily: 'practice', typing: 'practice', builder: 'practice', ai: 'practice', search: 'practice', progress: 'progress', profile: 'profile' }[r] || 'home';
+  setNav(main);
+  ({ home, lessons: () => lessons(a, b), lesson: () => lesson(a), vocab: () => vocabTopic(a), read: () => reading(a), listen: () => listening(a), speak: () => speakTopic(a), dlg: () => dialogue(a), write: () => writing(a), practice, quiz: quizView, flash: () => flash(a), daily, typing, builder, search, progress, profile, ai: () => AI ? aiView() : aiHome() }[r] || notFound)();
+}
+
+/* ============ actions ============ */
+const ACT = {
+  say: el => say(el.dataset.t), sayslow: el => say(el.dataset.t, .6),
+  reveal: el => { const b = $('#' + el.dataset.t); b.style.display = b.style.display === 'none' ? 'block' : 'none'; },
+  toggleTr: () => { S.showTr = !S.showTr; save(); route(); },
+  theme: () => { S.theme = S.theme === 'dark' ? 'light' : 'dark'; applyTheme(); save(); if (location.hash === '#/profile') route(); },
+  saveName: () => { const n = $('#nameIn').value.trim(); if (!n) return toast(L('Ismingizni kiriting', 'Enter your name')); S.name = n; S.level = $('#lvlIn').value; touch(); save(); route(); },
+  favLesson: el => { const id = el.dataset.id, i = S.favLessons.indexOf(id); i < 0 ? S.favLessons.push(id) : S.favLessons.splice(i, 1); save(); lesson(id); },
+  favWord: el => { const w = el.dataset.w, i = S.favWords.indexOf(w); i < 0 ? S.favWords.push(w) : S.favWords.splice(i, 1); save(); if (FC && location.hash.startsWith('#/flash')) flashView(); else route(); },
+  exCheck: el => { const g = GRAMMAR.find(x => x.id === el.dataset.id), i = +el.dataset.i, x = g.exercises[i], v = $('#ex' + i).value, ok = norm(v) === norm(x.a), out = $('#exr' + i); out.innerHTML = `<div class="explain">${ok ? '✅ ' + L('To\'g\'ri!', 'Correct!') : '❌ ' + L('Noto\'g\'ri.', 'Not quite.')}</div>`; if (ok) addXP(2, 'grammar'); },
+  exShow: el => { const g = GRAMMAR.find(x => x.id === el.dataset.id), i = +el.dataset.i, x = g.exercises[i]; $('#exr' + i).innerHTML = `<div class="explain">✅ <b>${esc(x.a)}</b><br>${esc(x.e)}</div>`; },
+  lessonQuiz: el => { const g = GRAMMAR.find(x => x.id === el.dataset.id); startQuiz(g.quiz, { title: g.title + ' — Quiz', id: 'g:' + g.id, count: 10, skill: 'grammar', retry: () => ACT.lessonQuiz(el), next: () => { location.hash = '#/lesson/' + g.id; } }); },
+  doneLesson: el => { const id = el.dataset.id; if (!S.done[id]) { S.done[id] = today(); addXP(20, 'grammar'); toast('✅ +20 XP'); } else toast(L('Allaqachon bajarilgan', 'Already completed')); save(); lesson(id); },
+  repeat: el => { lesson(el.dataset.id); },
+  textQuiz: el => { const k = el.dataset.k, id = el.dataset.id, o = (k === 'reading' ? READING : LISTENING).find(x => x.id === id); startQuiz(o.questions, { title: o.title, id: k[0] + ':' + id, skill: k, count: 20, onFinish: pct => { if (pct >= 50) S.done[id] = today(); }, next: () => { location.hash = '#/lessons/' + k; } }); },
+  vocabQuiz: el => { const t = VOCAB.find(x => x.id === el.dataset.id); startQuiz(vocabQs(t.words, Math.min(12, t.words.length)), { title: t.title + ' — Quiz', skill: 'vocab', count: 12, next: () => { location.hash = '#/lessons/vocab'; } }); },
+  irrQuiz: () => { const qs = pick(IRREGULAR, 12).map(v => { const o = shuffle([v.v2].concat(pick(IRREGULAR.filter(x => x.v2 !== v.v2), 3).map(x => x.v2))); return { q: 'V2 of "' + v.v1 + '" (' + v.uz + ')?', o, a: o.indexOf(v.v2), e: v.v1 + ' — ' + v.v2 + ' — ' + v.v3 }; }); startQuiz(qs, { title: 'Irregular verbs', skill: 'grammar', count: 12 }); },
+  mixedQuiz: () => startQuiz(pick(allGrammarQs(), 10).concat(vocabQs(ALLW, 6)), { title: 'Mixed quiz', count: 16, skill: 'grammar' }),
+  grammarQuizAll: () => startQuiz(allGrammarQs(), { title: 'Grammar quiz', count: 15, skill: 'grammar' }),
+  vocabQuizAll: () => startQuiz(vocabQs(ALLW, 15), { title: 'Vocabulary quiz', count: 15, skill: 'vocab' }),
+  timed: () => startQuiz(pick(allGrammarQs(), 10).concat(vocabQs(ALLW, 5)), { title: 'Timed test', count: 15, timed: 300, skill: 'grammar' }),
+  dailyQuiz: () => { const g = GRAMMAR[dayNum() % GRAMMAR.length]; startQuiz(g.quiz, { title: L('Kunlik test: ', 'Daily quiz: ') + g.title, count: 5, skill: 'grammar' }); },
+  chQuiz: el => { const g = GRAMMAR.find(x => x.id === el.dataset.id); startQuiz(g.quiz, { title: 'Daily: ' + g.title, count: 5, skill: 'grammar', onFinish: () => { const c = S.ch[today()] = S.ch[today()] || {}; if (!c.quiz) { c.quiz = 1; addXP(10); } }, next: () => { location.hash = '#/daily'; } }); },
+  review: () => { if (!S.mistakes.length) return toast(L('Saqlangan xato yo\'q 🎉', 'No saved mistakes 🎉')); startQuiz(S.mistakes.map(m => ({ q: m.q, o: m.o, a: m.a, e: m.e })), { title: 'Review Mistakes', count: 15, review: true, skill: 'grammar' }); },
+  pick: el => { const q = QZ.qs[QZ.i]; if (q.checked) return; q.sel = +el.dataset.i; quizView(); },
+  qcheck: () => { const q = QZ.qs[QZ.i]; q.checked = true; q.show = false; quizView(); },
+  qexp: () => { QZ.qs[QZ.i].show = !QZ.qs[QZ.i].show; quizView(); },
+  qnext: () => { QZ.i++; quizView(); }, qprev: () => { QZ.i--; quizView(); },
+  qfinish: () => { const un = QZ.qs.filter(q => q.sel == null).length; if (un && !confirm(L(un + ' ta savolga javob berilmagan. Tugatamizmi?', un + ' unanswered. Finish?'))) return; finishQuiz(); },
+  qretry: () => { const o = QZ.opt; if (o.retry) o.retry(); else startQuiz(QZ.qs.map(q => ({ q: q.q, o: q.o, a: q.a, e: q.e })), o); },
+  qnextTest: () => { const o = QZ && QZ.opt; if (o && o.next) o.next(); else location.hash = '#/practice'; },
+  flip: () => { FC.flipped = !FC.flipped; flashView(); }, grade: el => gradeCard(el.dataset.g),
+  chDone: el => { const c = S.ch[today()] = S.ch[today()] || {}; if (!c[el.dataset.k]) { c[el.dataset.k] = 1; addXP(10); } daily(); },
+  ch30: el => { const i = +el.dataset.i, k = S.ch30.indexOf(i); if (k < 0) { S.ch30.push(i); addXP(10, 'speaking'); } else S.ch30.splice(k, 1); save(); route(); },
+  tyCheck: () => { const v = $('#tyIn').value, ok = norm(v) === norm(TY.w.w); $('#tyOut').innerHTML = `<div class="explain">${ok ? '✅' : '❌'} <b>${esc(TY.w.w)}</b><br>${esc(TY.w.en)} — ${esc(TY.w.eu)}</div>`; if (ok) addXP(2, 'vocab'); },
+  typing: () => typing(), builder: () => builder(),
+  bdAdd: el => { BD.built.push(+el.dataset.i); builderView(); }, bdUn: el => { BD.built.splice(+el.dataset.i, 1); builderView(); },
+  bdCheck: () => { const s = BD.built.map(i => BD.words[i]).join(' ') + BD.punct, ok = norm(s) === norm(BD.ans); $('#bdOut').innerHTML = `<div class="explain">${ok ? '✅ ' : '❌ '}<b>${esc(BD.ans)}</b></div>`; if (ok) addXP(3, 'grammar'); },
+  accent: el => { S.accent = el.dataset.v; save(); route(); },
+  micPron: () => { const o = $('#pronOut'); listen(t => o.innerHTML = '<b>' + esc(t) + '</b>'); },
+  micFill: el => { const ta = $('#' + el.dataset.target); listen(t => { ta.value = t; }, () => { el.textContent = '🎤' + (el.id === 'micBtn' ? ' Record' : ''); }); el.textContent = '⏺'; },
+  saveSpeak: el => { const t = $('#spIn').value.trim(); if (!t) return toast(L('Avval javob bering (gapiring yoki yozing).', 'Answer first (speak or type).')); addXP(10, 'speaking'); toast('✅ +10 XP'); },
+  cue: el => { const i = el.dataset.i, out = $('#cue' + i); let t = 60, phase = 'prep'; clearTimers(); out.textContent = 'Prep: 60s'; timers.push(setInterval(() => { t--; if (t <= 0) { if (phase === 'prep') { phase = 'speak'; t = 120; toast('Speak now!'); } else { clearTimers(); out.textContent = L('Vaqt tugadi', 'Time is up'); return; } } out.textContent = (phase === 'prep' ? 'Prep: ' : 'Speak: ') + t + 's'; }, 1000)); },
+  wCheck: el => { const w = WRITING.find(x => x.id === el.dataset.id), t = $('#wIn').value; if (!t.trim()) return toast(L('Avval matn yozing', 'Write something first')); $('#wOut').innerHTML = `<div class="card"><b>${L('Oddiy avtomatik tekshiruv', 'Basic automatic check')}</b><p class="muted">${L('Bu AI emas va grammatik xatolarni topa olmaydi: faqat uzunlik, tinish belgilari va bog\'lovchilarni tekshiradi. Rasmiy baho emas.', 'Not AI: it only checks length, punctuation and linkers — it cannot find grammar mistakes and is not an official score.')}</p>${writeCheck(t, w).map(m => `<p>${m}</p>`).join('')}</div>`; },
+  wSave: el => { const t = $('#wIn').value; if (!t.trim()) return toast('—'); S.writings = S.writings.filter(x => x.id !== el.dataset.id); S.writings.push({ id: el.dataset.id, text: t, date: today() }); addXP(10, 'writing'); toast('✅ Saved +10 XP'); },
+  wAI: async el => { const w = WRITING.find(x => x.id === el.dataset.id), t = $('#wIn').value.trim(); if (!t) return toast(L('Avval matn yozing', 'Write something first')); const o = $('#wOut'); o.innerHTML = '<div class="card">…</div>'; try { const r = await fetch(S.aiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'writing', level: w.level, prompt: w.prompt, text: t }) }); const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status); o.innerHTML = `<div class="card"><b>🤖 AI feedback</b><p style="white-space:pre-wrap">${esc(d.reply || '')}</p><p class="muted">${L('Bu rasmiy IELTS bahosi emas.', 'Not an official IELTS score.')}</p></div>`; } catch (e) { o.innerHTML = `<div class="notice">⚠️ ${L('AI serveriga ulanib bo\'lmadi', 'AI backend unavailable')}: ${esc(e.message)}. README → "AI backend".</div>`; } },
+  playDlg: el => { const d = DIALOGUES.find(x => x.id === el.dataset.id); sayQueue(d.lines.map(l => l[1])); },
+  avatar: el => { S.avatar = el.dataset.v; save(); profile(); }, topic: el => { const v = el.dataset.v, i = S.topics.indexOf(v); i < 0 ? S.topics.push(v) : S.topics.splice(i, 1); save(); profile(); },
+  notif: async () => { if (!S.notif) { if (!('Notification' in window)) return toast(L('Brauzer bildirishnomani qo\'llamaydi', 'Notifications unsupported')); const p = await Notification.requestPermission(); if (p !== 'granted') return toast(L('Ruxsat berilmadi', 'Permission denied')); S.notif = true; } else S.notif = false; save(); profile(); },
+  saveProfile: () => { S.name = $('#pName').value.trim() || S.name; S.level = $('#pLevel').value; S.goal = +$('#pGoal').value; S.reason = $('#pReason').value; S.lang = $('#pLang').value; S.accent = $('#pAcc').value; S.aiUrl = $('#pAI').value.trim() || '/api/chat'; save(); applyLang(); toast('✅ Saved'); },
+  saveAll: () => { save(); toast('✅ Saved'); },
+  resetProg: () => { if (!confirm(L('Barcha o\'quv natijalari o\'chiriladi (profil qoladi). Davom etamizmi?', 'Reset all learning progress (profile stays)?'))) return; const keep = { name: S.name, avatar: S.avatar, level: S.level, goal: S.goal, reason: S.reason, topics: S.topics, theme: S.theme, lang: S.lang, notif: S.notif, accent: S.accent, aiUrl: S.aiUrl }; S = Object.assign(JSON.parse(JSON.stringify(DEF)), keep); save(); route(); },
+  clearAll: () => { if (!confirm(L('Hamma ma\'lumot o\'chiriladi. Davom etamizmi?', 'Delete ALL data?'))) return; try { localStorage.removeItem('em_state'); } catch (e) {} load(); applyTheme(); applyLang(); location.hash = '#/home'; route(); },
+  aiStart, aiEnd, aiReset: () => { AI = null; },
+  aiPause: () => { AI.paused = !AI.paused; aiView(); },
+  aiSend: () => { const ta = $('#aiIn'), t = ta.value.trim(); if (!t || AI.busy) return; AI.msgs.push({ role: 'user', text: t }); aiCall(); },
+  aiUz: async () => { const last = AI.msgs.filter(m => m.role === 'assistant').slice(-1)[0]; if (!last) return toast('—'); ACT.aiTr({ dataset: { i: AI.msgs.indexOf(last) } }); },
+  aiTr: async el => { const m = AI.msgs[+el.dataset.i]; if (m.uz) { m.uz = ''; return aiView(); } try { const r = await fetch(S.aiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'translate', text: m.text }) }); const d = await r.json().catch(() => ({})); if (!r.ok) throw new Error(d.error || 'HTTP ' + r.status); m.uz = d.reply || ''; } catch (e) { AI.err = '⚠️ ' + esc(e.message); } aiView(); },
+  aiFb: el => { AI.msgs[+el.dataset.i].showFb = true; aiView(); }
+};
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); const g = e.target.closest('[data-go]');
+  if (a && !a.disabled) { const f = ACT[a.dataset.act]; if (f) { f(a); } if (g && g === a) { location.hash = g.dataset.go; } return; }
+  if (g) { location.hash = g.dataset.go; }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'irrQ') $('#irrBody').innerHTML = irrRows(e.target.value);
+  if (e.target.id === 'sq') runSearch(e.target.value);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'aiIn') { e.preventDefault(); ACT.aiSend(); } });
+$('#nav').addEventListener('click', e => { const b = e.target.closest('button'); if (b) location.hash = '#/' + b.dataset.route; });
+$('#btnSearch').addEventListener('click', () => location.hash = '#/search');
+$('#btnTheme').addEventListener('click', ACT.theme);
+window.addEventListener('hashchange', route);
+
+function applyTheme() { document.documentElement.dataset.theme = S.theme; $('#btnTheme').textContent = S.theme === 'dark' ? '☀️' : '🌙'; $('meta[name=theme-color]').content = S.theme === 'dark' ? '#0f1020' : '#4f46e5'; }
+function applyLang() { document.documentElement.lang = S.lang; }
+applyTheme(); applyLang();
+
+/* study-time tracker: counts only while the tab is visible */
+setInterval(() => { if (document.visibilityState === 'visible' && S.name) { rec().min += 0.5; save(); } }, 30000);
+
+if (!location.hash) location.hash = '#/home'; else route();
+})();
+
+</script>
+</body>
+</html>
